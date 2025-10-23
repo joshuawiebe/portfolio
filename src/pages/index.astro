@@ -7,33 +7,74 @@ import Experience from "../components/Experience.astro";
 import Education from "../components/Education.astro";
 import Footer from "../components/Footer.astro";
 import { siteConfig } from "../config";
+import { themeStore, languageStore } from "../store/theme";
 import "../styles/global.css";
 ---
 
-<html lang="en">
+<html lang={languageStore.get()} data-theme={themeStore.get()}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={siteConfig.description} />
+    <meta name="theme-color" content={themeStore.get() === 'dark' ? '#020817' : '#ffffff'} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <title>{siteConfig.name} - {siteConfig.title}</title>
   </head>
   <body>
     <Header />
-    <section>
+    <main class="min-h-screen">
       <Hero />
       <About />
       <Projects />
       <Experience />
       <Education />
-    </section>
+    </main>
     <Footer />
+
+    <script is:inline>
+      // Theme and language initialization
+
+      // Initialize theme and language based on system preferences
+      if (typeof window !== 'undefined') {
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        const systemLang = navigator.language.toLowerCase().startsWith('de') ? 'de' : 'en';
+        
+        if (!localStorage.getItem('theme')) {
+          themeStore.set(systemTheme);
+        }
+
+        if (!localStorage.getItem('language')) {
+          languageStore.set(systemLang);
+        }
+      }
+
+      // Intersection Observer for reveal animations
+      const observerCallback = (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      };
+
+      const observer = new IntersectionObserver(observerCallback, {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      });
+
+      // Observe all sections
+      document.querySelectorAll('section').forEach(section => {
+        section.classList.add('reveal');
+        observer.observe(section);
+      });
+    </script>
   </body>
 </html>

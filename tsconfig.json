@@ -1,4 +1,12 @@
 {
-  "include": [".astro/types.d.ts", "**/*"],
+  "extends": "astro/tsconfigs/base",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "types": ["@astrojs/tailwind"]
+  },
+  "include": [".astro/types.d.ts", "src/**/*"],
   "exclude": ["dist"]
 }

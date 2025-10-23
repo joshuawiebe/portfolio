@@ -1,13 +1,14 @@
-// @ts-check
 import { defineConfig } from "astro/config";
-import tailwindcss from "@tailwindcss/vite";
+import tailwind from "@astrojs/tailwind";
 
+// https://astro.build/config
 export default defineConfig({
   site: "https://joshuawiebe.github.io/portfolio/",
   base: "/portfolio/",
   output: "static",
-  vite: {
-    plugins: [tailwindcss()],
-  },
+  integrations: [tailwind({
+    // Configure content paths for better performance
+    applyBaseStyles: false,
+  })],
 });
 

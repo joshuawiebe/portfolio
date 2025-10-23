@@ -1,0 +1,94 @@
+---
+import { themeStore, languageStore } from '../store/theme';
+import { translations } from '../i18n/translations';
+
+const currentTranslations = translations[languageStore.get()];
+---
+
+<div class="fixed top-4 right-4 z-50 flex items-center gap-4">
+  <!-- Language Switcher -->
+  <div class="relative group">
+    <button
+      class="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md bg-secondary text-secondary-foreground hover:bg-secondary/80"
+      aria-label="Change Language"
+    >
+      <span class="w-5 h-5 flex items-center justify-center">
+        {languageStore.get() === 'en' ? '🇬🇧' : '🇩🇪'}
+      </span>
+      <span class="hidden sm:inline">{languageStore.get().toUpperCase()}</span>
+    </button>
+    <div class="absolute right-0 mt-2 w-32 py-2 bg-popover rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+      <button
+        class="w-full px-4 py-2 text-sm text-left hover:bg-muted transition-colors"
+        data-language="en"
+      >
+        🇬🇧 English
+      </button>
+      <button
+        class="w-full px-4 py-2 text-sm text-left hover:bg-muted transition-colors"
+        data-language="de"
+      >
+        🇩🇪 Deutsch
+      </button>
+    </div>
+  </div>
+
+  <!-- Theme Switcher -->
+  <button
+    class="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md bg-secondary text-secondary-foreground hover:bg-secondary/80"
+    aria-label="Toggle theme"
+  >
+    <span class="w-5 h-5 flex items-center justify-center">
+      {themeStore.get() === 'dark' ? '🌙' : '☀️'}
+    </span>
+    <span class="hidden sm:inline">
+      {themeStore.get() === 'dark' ? currentTranslations.theme.dark : currentTranslations.theme.light}
+    </span>
+  </button>
+</div>
+
+<script is:inline>
+  // Theme toggling
+  const themeToggle = document.querySelector('[aria-label="Toggle theme"]');
+  themeToggle?.addEventListener('click', () => {
+    const newTheme = themeStore.get() === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    themeStore.set(newTheme);
+  });
+
+  // Language switching
+  const languageButtons = document.querySelectorAll('[data-language]');
+  languageButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const newLang = languageStore.get() === 'en' ? 'de' : 'en';
+      document.documentElement.setAttribute('lang', newLang);
+      localStorage.setItem('language', newLang);
+      languageStore.set(newLang);
+      window.location.reload();
+    });
+  });
+</script>
+
+<script>
+  // Theme toggling
+  const themeToggle = document.querySelector('[aria-label="Toggle theme"]');
+  themeToggle?.addEventListener('click', () => {
+    const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    window.dispatchEvent(new CustomEvent('theme-change', { detail: newTheme }));
+  });
+
+  // Language switching
+  const languageButtons = document.querySelectorAll('[data-language]');
+  languageButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+      const newLang = (e.currentTarget as HTMLButtonElement).dataset.language;
+      if (newLang) {
+        localStorage.setItem('language', newLang);
+        window.location.reload();
+      }
+    });
+  });
+</script>

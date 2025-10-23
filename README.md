@@ -1,103 +1,230 @@
-<img width="1943" height="1093" alt="image" src="https://github.com/user-attachments/assets/cc2ff955-17c2-48c7-81c8-479a0f061850" />
+# Modern Developer Portfolio
 
-# DevPortfolio Template
+A sleek, modern portfolio template built with Astro and Tailwind CSS.
 
-A modern, minimalist portfolio template built with Astro and Tailwind CSS. Perfect for developers looking to showcase their skills, experience, and projects in a clean, professional way.
+## Features
 
-This was completely rebuilt from the ground up from V1. This template was built to be entirely ready to go with a quick config edit (see below) but also provides the ability to easily extend in whatever way you want.
+- Automatic dark/light mode with system preference detection
+- Multi-language support (EN/DE) with browser language detection
+- Responsive design with modern UI components
+- Smooth section animations and transitions
+- SEO optimized structure
+- Type-safe development with TypeScript
+- Easy configuration through a single file
+- Fast performance with static site generation
 
-This template also comes with `CLAUDE.md` and `.cursor/rules` files for easy integration with your existing AI workflows.
+## Tech Stack
 
-> **📬 Connect & Share!**  
-> For questions and updates, feel free to reach out on [**X (Twitter)**](https://x.com/rfitzio).  
-> If you've built and published your personal site with this template, I'd love to see it! Send me a DM 🚀
+- **Framework**: [Astro](https://astro.build/) v5
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) v3
+- **State Management**: [Nanostores](https://github.com/nanostores/nanostores)
+- **Type Safety**: TypeScript
 
-## Preview
+## Project Structure
 
-To view a live preview of the site, [click here](https://ryanfitzgerald.github.io/devportfolio/).
+```
+devportfolio/
+├── public/
+│   └── favicon.svg           # Site favicon
+├── src/
+│   ├── components/           # Astro components
+│   │   ├── About.astro      # About section
+│   │   ├── Education.astro  # Education section
+│   │   ├── Experience.astro # Work experience section
+│   │   ├── Footer.astro     # Site footer
+│   │   ├── Header.astro     # Navigation header
+│   │   ├── Hero.astro       # Hero/intro section
+│   │   ├── Projects.astro   # Projects showcase
+│   │   └── Settings.astro   # Settings modal
+│   ├── i18n/
+│   │   └── translations.ts  # Language translations
+│   ├── pages/
+│   │   └── index.astro     # Main page layout
+│   ├── store/
+│   │   └── theme.ts        # Theme/language state
+│   ├── styles/
+│   │   ├── base.css       # Tailwind imports
+│   │   └── global.css     # Global styles
+│   ├── utils/
+│   │   ├── types.ts       # TypeScript types
+│   │   └── constants.ts   # Shared constants
+│   └── config.ts          # Site configuration
+├── astro.config.mjs       # Astro configuration
+├── tailwind.config.mjs    # Tailwind configuration
+├── tsconfig.json         # TypeScript configuration
+├── postcss.config.cjs    # PostCSS configuration
+└── package.json         # Project dependencies
+```
 
-## Built With
+## Quick Start
 
-- **[Astro](https://astro.build/)** - Static site generator for modern web apps
-- **[Tailwind CSS v4](https://tailwindcss.com/)** - Utility-first CSS framework
-- **[Tabler Icons](https://tabler.io/icons)** - Free and open source icons
-- **TypeScript** - For type-safe configuration
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/portfolio.git
+cd portfolio
+```
 
-## Updating the Template
+2. Install dependencies
+```bash
+npm install
+```
 
-### Configuration
+3. Start the development server
+```bash
+npm run dev
+```
 
-The template is designed to be easily customizable through the `src/config.ts` file. This single file controls:
+4. Build for production
+```bash
+npm run build
+```
 
-- **Personal Information**: Name, title, description
-- **Accent Color**: Primary color theme (changing this will change the accent color site wide)
-- **Social Links**: Email, LinkedIn, Twitter, GitHub (all optional)
-- **About Section**: Personal bio/description
-- **Skills**: List of technical skills
-- **Projects**: Project showcase with descriptions and links
-- **Experience**: Work history with bullet points
-- **Education**: Educational background and achievements
+## Configuration
 
-If skills, projects, experience, or education are removed from the config, those sections will be hidden entirely.
+The site is configured through `src/config.ts`:
 
-### Example structures
+### Theme Configuration
+```typescript
+theme: {
+  accentColor: "#1d4ed8",
+  fontFamily: "Inter"
+}
 
-Here's what the config data structure looks like for each section:
-
-#### Basic Information
+### Personal Information
 ```typescript
 name: "Your Name",
 title: "Your Job Title",
 description: "Brief site description",
-accentColor: "#1d4ed8", // Hex color for theme
-```
-
-#### Social Links (all optional)
-```typescript
 social: {
-  email: "your-email@example.com",
-  linkedin: "https://linkedin.com/in/yourprofile",
-  twitter: "https://twitter.com/yourprofile", 
   github: "https://github.com/yourusername",
+  linkedin: "https://linkedin.com/in/yourprofile",
+  email: "your.email@example.com"
 }
 ```
 
-#### About Section
+### Content Sections
 ```typescript
-aboutMe: "A paragraph describing yourself, your background, interests, and what you're passionate about. This appears in the About section of your portfolio."
-```
-
-#### Skills
-```typescript
-skills: ["JavaScript", "React", "Node.js", "Python", "AWS", "Docker"]
-```
-
-#### Projects
-```typescript
-projects: [
-  {
+{
+  about: "Your professional summary",
+  skills: ["JavaScript", "React", "Node.js"],
+  projects: [{
     name: "Project Name",
-    description: "Brief description of what the project does and its impact",
-    link: "https://github.com/yourusername/project",
-    skills: ["React", "Node.js", "AWS"], // Technologies used
-  }
-]
+    description: "Project description",
+    link: "https://github.com/...",
+    skills: ["React", "Node.js"]
+  }],
+  experience: [{
+    company: "Company Name",
+    title: "Job Title",
+    dateRange: "2023 - Present",
+    bullets: ["Achievement 1", "Achievement 2"]
+  }],
+  education: [{
+    school: "University Name",
+    degree: "Degree Name",
+    dateRange: "2018 - 2022",
+    achievements: ["Achievement 1", "Achievement 2"]
+  }]
+}
 ```
 
-#### Experience
+## Internationalization
+
+The site detects the user's preferred language and theme. Available options:
+
+- Languages: English (EN) and German (DE)
+- Themes: Light and Dark mode
+
+### Adding Translations
+
+Add translations in `src/i18n/translations.ts`:
+
 ```typescript
-experience: [
-  {
-    company: "Company Name",
-    title: "Your Job Title",
-    dateRange: "Jan 2022 - Present",
-    bullets: [
-      "Led development of microservices architecture serving 1M+ users",
-      "Reduced API response times by 40% through optimization",
-      "Mentored team of 5 junior developers",
-    ],
+export const translations = {
+  en: {
+    nav: {
+      about: 'About',
+      projects: 'Projects',
+      // ...
+    },
+    // ...
+  },
+  de: {
+    nav: {
+      about: 'Über mich',
+      projects: 'Projekte',
+      // ...
+    },
+    // ...
   }
-]
+};
+```
+
+## 🎨 Customizing the Theme
+
+### Colors
+Update the color scheme in `src/styles/global.css`:
+
+```css
+:root {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 3.9%;
+  --primary: 221.2 83.2% 53.3%;
+  --secondary: 210 40% 96.1%;
+  /* ... */
+}
+
+[data-theme="dark"] {
+  --background: 0 0% 3.9%;
+  --foreground: 0 0% 98%;
+  --primary: 217.2 91.2% 59.8%;
+  --secondary: 217.2 32.6% 17.5%;
+  /* ... */
+}
+```
+
+### Animations
+Customize animations in `tailwind.config.mjs`:
+
+```javascript
+theme: {
+  extend: {
+    keyframes: {
+      'fade-in': {
+        from: { opacity: '0', transform: 'translateY(10px)' },
+        to: { opacity: '1', transform: 'translateY(0)' },
+      },
+      // ...
+    },
+    animation: {
+      'fade-in': 'fade-in 0.5s ease-out forwards',
+      // ...
+    },
+  },
+}
+```
+
+## 🚀 Deployment
+
+1. Update `astro.config.mjs` with your site URL:
+```javascript
+export default defineConfig({
+  site: "https://yourusername.github.io/portfolio/",
+  base: "/portfolio/",
+  // ...
+});
+```
+
+2. Build the site:
+```bash
+npm run build
+```
+
+3. Deploy the `dist` folder to your hosting provider
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 ```
 
 #### Education
