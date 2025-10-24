@@ -6,6 +6,7 @@ import Projects from "../components/Projects.astro";
 import Experience from "../components/Experience.astro";
 import Education from "../components/Education.astro";
 import Footer from "../components/Footer.astro";
+import LoadingScreen from "../components/LoadingScreen.astro";
 import { siteConfig } from "../config";
 import { themeStore, languageStore } from "../store/theme";
 import "../styles/global.css";
@@ -28,6 +29,7 @@ import "../styles/global.css";
     <title>{siteConfig.name} - {siteConfig.title}</title>
   </head>
   <body>
+    <LoadingScreen />
     <Header />
     <main class="min-h-screen">
       <Hero />

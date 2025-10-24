@@ -6,6 +6,7 @@ export const siteConfig = {
   social: {
     email: "joshua.wiebe2010@gmail.com",
     github: "https://github.com/joshuawiebe",
+    instagram: "https://www.instagram.com/joshuawiebe2010/",
   },
   aboutMe:
     "I'm a German student born on August 24, 2010, passionate about full stack development, IoT projects, and road biking. Currently attending Gymnasium am Markt in Bünde, I actively pursue my interest in programming and software development alongside my studies. From managing my own homelab to creating IoT solutions, I love exploring different aspects of technology. In my free time, I enjoy challenging myself with both technical projects and cycling adventures, combining my love for technology with an active lifestyle.",

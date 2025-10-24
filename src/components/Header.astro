@@ -2,7 +2,7 @@
 import { siteConfig } from "../config";
 import { translations } from "../i18n/translations";
 import { languageStore } from "../store/theme";
-import ThemeSwitch from "./ThemeSwitch.astro";
+import SettingsModal from "./SettingsModal.astro";
 
 const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
 const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
@@ -20,15 +20,15 @@ const t = translations[languageStore.get()];
   <nav class="relative max-w-7xl mx-auto px-6 py-4">
     <div class="flex items-center justify-between">
       <!-- Logo/Name -->
-      <a 
-        href="#" 
+      <button 
+        onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
         class="text-xl font-bold tracking-tight hover:text-primary transition-colors"
       >
         {siteConfig.name}
-      </a>
+      </button>
 
       <!-- Desktop Navigation -->
-      <ul class="hidden md:flex items-center gap-6">
+      <ul class="hidden md:flex items-center justify-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <li>
           <a
             href="#about"
@@ -75,28 +75,52 @@ const t = translations[languageStore.get()];
         }
       </ul>
 
-      <!-- Mobile Menu Button -->
-      <button
-        id="mobile-menu-button"
-        class="md:hidden p-2 hover:bg-secondary rounded-md transition-colors"
-        aria-label="Toggle menu"
-      >
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="24" 
-          height="24" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          stroke-width="2" 
-          stroke-linecap="round" 
-          stroke-linejoin="round"
+      <div class="flex items-center gap-2">
+        <!-- Settings Button -->
+        <button
+          id="settings-button"
+          class="p-2 hover:bg-secondary rounded-md transition-colors"
+          aria-label="Settings"
         >
-          <line x1="4" x2="20" y1="12" y2="12"/>
-          <line x1="4" x2="20" y1="6" y2="6"/>
-          <line x1="4" x2="20" y1="18" y2="18"/>
-        </svg>
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+        </button>
+
+        <!-- Mobile Menu Button -->
+        <button
+          id="mobile-menu-button"
+          class="md:hidden p-2 hover:bg-secondary rounded-md transition-colors"
+          aria-label="Toggle menu"
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            stroke-width="2" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"
+          >
+            <line x1="4" x2="20" y1="12" y2="12"/>
+            <line x1="4" x2="20" y1="6" y2="6"/>
+            <line x1="4" x2="20" y1="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <!-- Mobile Navigation -->
@@ -154,11 +178,11 @@ const t = translations[languageStore.get()];
   </nav>
 </header>
 
-<ThemeSwitch />
+<SettingsModal />
 
 <style>
   .nav-link {
-    @apply relative py-1 text-muted-foreground hover:text-foreground transition-colors;
+    @apply relative py-1 text-muted-foreground hover:text-foreground transition-colors text-base font-medium;
   }
 
   .nav-link::after {
