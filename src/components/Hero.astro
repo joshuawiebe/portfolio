@@ -135,6 +135,7 @@ const t = useTranslations();
   <div class="h-full mx-auto p-8 sm:p-12 md:p-24 flex items-center">
     <div>
       <h2
+        data-i18n="hero.greeting"
         class="text-pretty text-xl sm:text-2xl md:text-5xl font-bold tracking-tight text-gray-700 dark:text-gray-200 animate-fade-in"
       >
         {t.hero.greeting}
@@ -142,15 +143,18 @@ const t = useTranslations();
       <h1
         class="mt-6 sm:mt-8 md:mt-10 text-pretty text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight text-gray-900 dark:text-gray-100 animate-fade-in animation-delay-200"
       >
-        {t.hero.intro} <span style={{ color: siteConfig.accentColor }}
-          >{siteConfig.name}</span
-        >
+        <span data-i18n="hero.intro">{t.hero.intro}</span> <span style={{ color: siteConfig.accentColor }}>{siteConfig.name}</span>
       </h1>
-      <p
-        class="mt-4 sm:mt-6 md:mt-8 text-pretty text-base sm:text-lg md:text-xl/8 font-medium text-gray-600 dark:text-gray-400 animate-fade-in animation-delay-400"
-      >
-        {siteConfig.title}
-      </p>
+
+      <script>
+        import '../utils/clientTranslations';
+      </script>
+        <p
+          data-config-title
+          class="mt-4 sm:mt-6 md:mt-8 text-pretty text-base sm:text-lg md:text-xl/8 font-medium text-gray-600 dark:text-gray-400 animate-fade-in animation-delay-400"
+        >
+          {siteConfig.title}
+        </p>
     </div>
   </div>
   <div

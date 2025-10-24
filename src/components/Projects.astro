@@ -13,9 +13,11 @@ const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
       <div>
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
           <div class="lg:col-span-4">
-            <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-foreground">
-              {t.projects.title}
-            </h2>
+             <h2 
+               data-i18n="projects.title"
+               class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-foreground">
+               {t.projects.title}
+             </h2>
             <div
               class="w-[75px] h-[5px] mt-2 rounded-full"
               style={`background-color: ${siteConfig.accentColor}`}
@@ -69,6 +71,7 @@ const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
                         </div>
 
                         <p
+                          data-project-desc={project.name.toLowerCase().replace(/\s+/g, '')}
                           class={`text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed ${project.link ? "pr-12 sm:pr-14 md:pr-16" : ""}`}
                         >
                           {project.description}
@@ -102,3 +105,7 @@ const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
     </section>
   )
 }
+
+<script>
+  import '../utils/clientTranslations';
+</script>

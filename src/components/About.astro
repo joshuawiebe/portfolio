@@ -10,6 +10,7 @@ const t = useTranslations();
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
       <div class="lg:col-span-4">
         <h2
+          data-i18n="about.title"
           class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-foreground"
         >
           {t.about.title}
@@ -22,7 +23,10 @@ const t = useTranslations();
       </div>
 
       <div class="lg:col-span-8 space-y-8">
-        <p class="text-lg sm:text-xl md:text-2xl leading-relaxed text-muted-foreground">
+        <p 
+          data-config-about
+          class="text-lg sm:text-xl md:text-2xl leading-relaxed text-muted-foreground"
+        >
           {siteConfig.aboutMe}
         </p>
 
@@ -41,3 +45,7 @@ const t = useTranslations();
     </div>
   </div>
 </section>
+
+<script>
+  import '../utils/clientTranslations';
+</script>

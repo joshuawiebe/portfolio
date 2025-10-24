@@ -1,5 +1,8 @@
 ---
 import { siteConfig } from "../config";
+import { useTranslations } from "../utils/translations";
+
+const t = useTranslations();
 const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
 ---
 
@@ -9,9 +12,11 @@ const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
       <div>
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
           <div class="lg:col-span-4">
-            <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-foreground">
-              Experience
-            </h2>
+             <h2 
+               data-i18n="experience.title"
+               class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-foreground">
+               {t.experience.title}
+             </h2>
             <div
               class="w-[75px] h-[5px] mt-2 rounded-full"
               style={`background-color: ${siteConfig.accentColor}`}
@@ -51,7 +56,7 @@ const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
                       </span>
                     </div>
 
-                    <ul class="space-y-2">
+                    <ul class="space-y-2" data-exp-bullets={exp.company.toLowerCase().replace(/\s+/g, '')}>
                       {exp.bullets.map((bullet) => (
                         <li class="flex items-start">
                           <span class="inline-block w-1.5 h-1.5 rounded-full bg-indigo-500 dark:bg-indigo-400 mt-2 mr-3 flex-shrink-0" />
@@ -71,3 +76,7 @@ const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
     </section>
   )
 }
+
+<script>
+  import '../utils/clientTranslations';
+</script>

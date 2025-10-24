@@ -1,5 +1,8 @@
 ---
 import { siteConfig } from "../config";
+import { useTranslations } from "../utils/translations";
+
+const t = useTranslations();
 const hasEducation = siteConfig.education && siteConfig.education.length > 0;
 ---
 
@@ -9,9 +12,11 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
       <div>
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
           <div class="lg:col-span-4">
-            <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-foreground">
-              Education
-            </h2>
+             <h2 
+               data-i18n="education.title"
+               class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-foreground">
+               {t.education.title}
+             </h2>
             <div
               class="w-[75px] h-[5px] mt-2 rounded-full"
               style={`background-color: ${siteConfig.accentColor}`}
@@ -35,22 +40,29 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
 
                   <div class="bg-gray-50/80 dark:bg-gray-800/50 rounded-xl sm:rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg shadow-blue-500/5 dark:shadow-blue-400/5 backdrop-blur-sm p-4 sm:p-5 md:p-6 hover:bg-gray-100/80 dark:hover:bg-gray-800/80 hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-blue-400/10 hover:-translate-y-1 transition-all duration-300 mb-8 last:mb-0">
                     <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
-                      <div>
-                        <h3 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100">
-                          {edu.degree}
-                        </h3>
-                        <p
-                          class="text-base sm:text-lg text-indigo-600 dark:text-indigo-400"
-                        >
-                          {edu.school}
-                        </p>
-                      </div>
-                      <span class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-2 sm:mt-0 bg-indigo-50 dark:bg-indigo-900/20 px-2.5 py-1 rounded-md ring-1 ring-indigo-500/10 dark:ring-indigo-400/20">
-                        {edu.dateRange}
-                      </span>
+                    <div>
+                      <h3 
+                        data-edu-degree={edu.school.toLowerCase().includes('gymnasium') ? 'gymnasium' : 'elementary'}
+                        class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100"
+                      >
+                        {t.content.educationDegrees[edu.school.toLowerCase().includes('gymnasium') ? 'gymnasium' : 'elementary']}
+                      </h3>
+                      <p
+                        data-edu-school={edu.school.toLowerCase().includes('gymnasium') ? 'gymnasium' : 'elementary'}
+                        class="text-base sm:text-lg text-indigo-600 dark:text-indigo-400"
+                      >
+                        {t.content.educationSchools[edu.school.toLowerCase().includes('gymnasium') ? 'gymnasium' : 'elementary']}
+                      </p>
+                    </div>
+                    <span 
+                      data-edu-date={edu.school.toLowerCase().includes('gymnasium') ? 'gymnasium' : 'elementary'}
+                      class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-2 sm:mt-0 bg-indigo-50 dark:bg-indigo-900/20 px-2.5 py-1 rounded-md ring-1 ring-indigo-500/10 dark:ring-indigo-400/20"
+                    >
+                      {t.content.educationDates[edu.school.toLowerCase().includes('gymnasium') ? 'gymnasium' : 'elementary']}
+                    </span>
                     </div>
 
-                    <ul class="space-y-2">
+                    <ul class="space-y-2" data-edu-achievements={edu.school.toLowerCase().includes('gymnasium') ? 'gymnasium' : 'elementary'}>
                       {edu.achievements.map((achievement) => (
                         <li class="flex items-start">
                           <span class="inline-block w-1.5 h-1.5 rounded-full bg-indigo-500 dark:bg-indigo-400 mt-2 mr-3 flex-shrink-0" />
@@ -70,3 +82,7 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
     </section>
   )
 }
+
+<script>
+  import '../utils/clientTranslations';
+</script>
