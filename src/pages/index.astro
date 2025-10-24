@@ -41,8 +41,8 @@ import "../styles/global.css";
     </main>
     <Footer />
 
-    <script is:inline>
-      // Theme and language initialization
+    <script>
+      import { initScrollAnimations, initHoverAnimations } from '../utils/animations';
 
       // Initialize theme and language based on system preferences
       if (typeof window !== 'undefined') {
@@ -52,33 +52,12 @@ import "../styles/global.css";
         const theme = savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : systemTheme;
         document.documentElement.setAttribute('data-theme', theme);
 
-        // Initialize language
-        const systemLang = navigator.language.toLowerCase().startsWith('de') ? 'de' : 'en';
-        if (!localStorage.getItem('language')) {
-          languageStore.set(systemLang);
-        }
-      }
-
-      // Intersection Observer for reveal animations
-      const observerCallback = (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
+        // Initialize animations
+        window.addEventListener('load', () => {
+          initScrollAnimations();
+          initHoverAnimations();
         });
-      };
-
-      const observer = new IntersectionObserver(observerCallback, {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-      });
-
-      // Observe all sections
-      document.querySelectorAll('section').forEach(section => {
-        section.classList.add('reveal');
-        observer.observe(section);
-      });
+      }
     </script>
   </body>
 </html>

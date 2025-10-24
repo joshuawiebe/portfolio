@@ -82,7 +82,7 @@ function updateTranslations(newLang: Language) {
   });
 
   // Update document title
-  document.title = `${t.hero.greeting} ${t.hero.intro} - ${t.hero.title}`;
+  document.title = "Joshua Wiebe | Full Stack Developer";
 }
 
 // Initialize translations
