@@ -32,7 +32,8 @@ const lang = language.get();
   </head>
   <body>
     <LoadingScreen />
-    <div class="page-content" style="opacity: 0">
+    
+    <div id="page-content" class="opacity-0 transition-opacity duration-500">
       <Header />
       <main class="min-h-screen">
         <Hero />
@@ -57,21 +58,28 @@ const lang = language.get();
     <script>
       import { initScrollAnimations } from '../utils/animations';
 
-      // Wait for the DOM to be ready
       document.addEventListener('DOMContentLoaded', () => {
-        const loader = document.querySelector('.loading-screen');
-        const content = document.querySelector('.page-content');
+        const loadingScreen = document.getElementById('loading-screen');
+        const pageContent = document.getElementById('page-content');
 
-        if (loader && content) {
-          // Wait for loader animation to complete
-          loader.addEventListener('animationend', () => {
-            // Show content
-            content.style.opacity = '1';
-            content.style.transition = 'opacity 0.5s ease';
-            
-            // Initialize scroll animations
-            initScrollAnimations();
+        if (loadingScreen && pageContent) {
+          // Watch for loading screen opacity changes
+          const observer = new MutationObserver(() => {
+            const loader = document.getElementById('loading-screen');
+            if (loader && getComputedStyle(loader).opacity === '0') {
+              // Show the content with a fade in
+              setTimeout(() => {
+                pageContent.classList.remove('opacity-0');
+                // Initialize scroll animations after content is visible
+                setTimeout(() => {
+                  initScrollAnimations();
+                }, 500); // Wait for fade in to complete
+              }, 100); // Small delay to ensure loader is gone
+              observer.disconnect();
+            }
           });
+
+          observer.observe(loadingScreen, { attributes: true, attributeFilter: ['style'] });
         }
       });
     </script>
