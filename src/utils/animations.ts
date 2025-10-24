@@ -23,44 +23,79 @@ export function initScrollAnimations() {
     // Add reveal class to section
     section.classList.add('reveal-on-scroll');
     
-    // Add reveal classes to section title with initial delay
-    section.querySelectorAll('h2').forEach((heading) => {
-      heading.classList.add('reveal-on-scroll');
-      (heading as HTMLElement).style.transitionDelay = '100ms';
-    });
+    // Project section animations
+    const projectsSection = section.querySelector('.projects-grid');
+    if (projectsSection) {
+      // Animate heading with content
+      const heading = section.querySelector('h2');
+      if (heading) {
+        heading.classList.add('reveal-on-scroll', 'section-heading');
+      }
 
-    // Add reveal classes to project cards with stagger
-    section.querySelectorAll('.group.relative').forEach((card, index) => {
-      card.classList.add('reveal-on-scroll', 'project-card');
-      (card as HTMLElement).style.transitionDelay = `${200 + index * 100}ms`;
-    });
-
-    // Add reveal classes to skill groups with stagger
-    const skillsContainer = section.querySelector('.skills-grid');
-    if (skillsContainer) {
-      skillsContainer.classList.add('reveal-on-scroll', 'skills-container');
-      skillsContainer.querySelectorAll('[data-skill]').forEach((skill, index) => {
-        (skill as HTMLElement).style.transitionDelay = `${300 + index * 50}ms`;
+      // Animate project cards with stagger
+      section.querySelectorAll('.group.relative').forEach((card, index) => {
+        card.classList.add('reveal-on-scroll', 'project-card');
+        (card as HTMLElement).style.transitionDelay = `${400 + index * 200}ms`;
       });
     }
 
-    // Add reveal classes to about section content
+    // Skills section animations
+    const skillsSection = section.querySelector('.skills-grid');
+    if (skillsSection) {
+      // Animate heading with content
+      const heading = section.querySelector('h2');
+      if (heading) {
+        heading.classList.add('reveal-on-scroll', 'section-heading');
+      }
+
+      // Animate skills container and individual skills
+      skillsSection.classList.add('reveal-on-scroll', 'skills-container');
+      skillsSection.querySelectorAll('[data-skill]').forEach((skill, index) => {
+        (skill as HTMLElement).style.transitionDelay = `${500 + index * 100}ms`;
+      });
+    }
+
+    // About section animations
     const aboutContent = section.querySelector('.about-content');
     if (aboutContent) {
+      // Animate heading with content
+      const heading = section.querySelector('h2');
+      if (heading) {
+        heading.classList.add('reveal-on-scroll', 'section-heading');
+      }
+
       aboutContent.classList.add('reveal-on-scroll', 'about-container');
     }
 
-    // Add reveal classes to experience items with stagger
-    section.querySelectorAll('.experience-item').forEach((item, index) => {
-      item.classList.add('reveal-on-scroll', 'timeline-item');
-      (item as HTMLElement).style.transitionDelay = `${200 + index * 150}ms`;
-    });
+    // Experience section animations
+    const experienceItems = section.querySelectorAll('.experience-item');
+    if (experienceItems.length > 0) {
+      // Animate heading with content
+      const heading = section.querySelector('h2');
+      if (heading) {
+        heading.classList.add('reveal-on-scroll', 'section-heading');
+      }
 
-    // Add reveal classes to education items with stagger
-    section.querySelectorAll('.education-item').forEach((item, index) => {
-      item.classList.add('reveal-on-scroll', 'timeline-item');
-      (item as HTMLElement).style.transitionDelay = `${200 + index * 150}ms`;
-    });
+      experienceItems.forEach((item, index) => {
+        item.classList.add('reveal-on-scroll', 'timeline-item');
+        (item as HTMLElement).style.transitionDelay = `${400 + index * 200}ms`;
+      });
+    }
+
+    // Education section animations
+    const educationItems = section.querySelectorAll('.education-item');
+    if (educationItems.length > 0) {
+      // Animate heading with content
+      const heading = section.querySelector('h2');
+      if (heading) {
+        heading.classList.add('reveal-on-scroll', 'section-heading');
+      }
+
+      educationItems.forEach((item, index) => {
+        item.classList.add('reveal-on-scroll', 'timeline-item');
+        (item as HTMLElement).style.transitionDelay = `${400 + index * 200}ms`;
+      });
+    }
   });
 
   // Initial check

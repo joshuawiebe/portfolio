@@ -25,68 +25,79 @@
 .reveal-on-scroll {
   opacity: 1;
   transform: translateY(0) scale(1);
-  transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+  transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .reveal-on-scroll:not(.revealed) {
   opacity: 0;
-  transform: translateY(30px) scale(0.95);
+  transform: translateY(40px) scale(0.95);
+  pointer-events: none;
 }
 
 /* Section headings animation */
-h2.reveal-on-scroll {
+.section-heading.reveal-on-scroll {
   transform-origin: left;
+  transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-h2.reveal-on-scroll:not(.revealed) {
-  transform: translateY(30px) scale(0.95);
+.section-heading.reveal-on-scroll:not(.revealed) {
+  transform: translateY(40px) scale(0.95);
 }
 
 /* Project cards animation */
 .project-card.reveal-on-scroll {
   transform-origin: center;
-  transition: all 1s cubic-bezier(0.17, 0.55, 0.55, 1);
+  transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .project-card.reveal-on-scroll:not(.revealed) {
-  transform: translateY(50px) scale(0.95);
+  transform: translateY(60px) scale(0.95);
 }
 
 /* Skills container animation */
 .skills-container.reveal-on-scroll {
-  transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+  transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .skills-container.reveal-on-scroll:not(.revealed) {
-  transform: translateY(40px);
+  transform: translateY(50px);
 }
 
 [data-skill] {
-  transition: all 0.5s cubic-bezier(0.17, 0.55, 0.55, 1);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* About section container animation */
 .about-container.reveal-on-scroll {
-  transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+  transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .about-container.reveal-on-scroll:not(.revealed) {
-  transform: translateY(40px) scale(0.98);
+  transform: translateY(50px) scale(0.98);
 }
 
 /* Timeline items animation */
 .timeline-item.reveal-on-scroll {
   transform-origin: left;
-  transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+  transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .timeline-item.reveal-on-scroll:not(.revealed) {
-  transform: translateX(-30px);
+  transform: translateX(-40px);
 }
 
 /* Ensure smooth animations on hover after reveal */
 .revealed {
-  transition: all 0.3s ease-in-out;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 /* Ensure sections are visible during SSR */
