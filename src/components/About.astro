@@ -1,5 +1,8 @@
 ---
 import { siteConfig } from "../config";
+import { useTranslations } from "../utils/translations";
+
+const t = useTranslations();
 ---
 
 <section id="about" class="p-8 sm:p-12 md:p-16 lg:p-24">
@@ -9,7 +12,7 @@ import { siteConfig } from "../config";
         <h2
           class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-foreground"
         >
-          About Me
+          {t.about.title}
         </h2>
         <div
           class="w-[75px] h-[5px] mt-2 rounded-full"

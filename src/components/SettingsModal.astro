@@ -1,4 +1,7 @@
 ---
+import { useTranslations } from '../utils/translations';
+
+const t = useTranslations();
 ---
 
 <dialog id="settings-modal" class="bg-background p-8 rounded-2xl shadow-2xl max-w-md w-full border border-border/50">
@@ -31,14 +34,14 @@
               <circle cx="12" cy="12" r="5"/>
               <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
             </svg>
-            <h3 class="text-lg font-semibold text-foreground">Theme</h3>
+            <h3 class="text-lg font-semibold text-foreground">{t.settings.theme}</h3>
           </div>
         </div>
         <div class="grid grid-cols-3 gap-2">
           <button
             class="theme-button"
             data-theme-value="light"
-            aria-label="Light theme"
+            aria-label={t.settings.light}
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="5" />
@@ -51,44 +54,74 @@
               <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
               <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
             </svg>
-            <span>Light</span>
+            <span>{t.settings.light}</span>
           </button>
           <button
             class="theme-button"
             data-theme-value="dark"
-            aria-label="Dark theme"
+            aria-label={t.settings.dark}
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
             </svg>
-            <span>Dark</span>
+            <span>{t.settings.dark}</span>
           </button>
           <button
             class="theme-button"
             data-theme-value="system"
-            aria-label="System theme"
+            aria-label={t.settings.system}
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
               <line x1="8" y1="21" x2="16" y2="21" />
               <line x1="12" y1="17" x2="12" y2="21" />
             </svg>
-            <span>System</span>
+            <span>{t.settings.system}</span>
           </button>
         </div>
       </div>
 
-      <!-- Language Selection Coming Soon -->
-      <div class="flex flex-col items-center justify-center text-center p-6 bg-secondary/20 rounded-xl space-y-4">
-        <div class="relative">
-          <div class="absolute inset-0 bg-primary/5 blur-2xl rounded-full"></div>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-primary relative" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-          </svg>
+      <!-- Language Selection -->
+      <div class="space-y-4">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="2" y1="12" x2="22" y2="12" />
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+            </svg>
+            <h3 class="text-lg font-semibold text-foreground">Language</h3>
+          </div>
         </div>
-        <div class="relative z-10 space-y-2">
-          <h3 class="text-lg font-semibold text-foreground font-inter">Language Support Coming Soon!</h3>
-          <p class="text-base text-muted-foreground font-inter">Multilingual support will be added in the next update.</p>
+        <div class="grid grid-cols-4 gap-2">
+          <button
+            class="lang-button"
+            data-lang-value="en"
+            aria-label="English"
+          >
+            <span>EN</span>
+          </button>
+          <button
+            class="lang-button"
+            data-lang-value="de"
+            aria-label="Deutsch"
+          >
+            <span>DE</span>
+          </button>
+          <button
+            class="lang-button"
+            data-lang-value="es"
+            aria-label="Español"
+          >
+            <span>ES</span>
+          </button>
+          <button
+            class="lang-button"
+            data-lang-value="fr"
+            aria-label="Français"
+          >
+            <span>FR</span>
+          </button>
         </div>
       </div>
     </div>
@@ -108,6 +141,16 @@
   }
 
   .theme-button[data-theme-selected="true"] {
+    @apply bg-secondary text-foreground border-border;
+  }
+
+  .lang-button {
+    @apply flex items-center justify-center p-2 rounded-lg text-sm font-medium
+           text-muted-foreground hover:text-foreground transition-all duration-200
+           border border-transparent hover:border-border hover:bg-secondary;
+  }
+
+  .lang-button[data-lang-selected="true"] {
     @apply bg-secondary text-foreground border-border;
   }
 </style>
@@ -200,8 +243,52 @@
     addThemeHandlers();
   });
   
+  // Language functionality
+  import { language } from '../store/language';
+
+  const updateLanguage = (newLang: 'en' | 'de' | 'es' | 'fr') => {
+    // Update buttons
+    document.querySelectorAll('.lang-button').forEach(button => {
+      const isSelected = (button as HTMLElement).dataset.langValue === newLang;
+      button.setAttribute('data-lang-selected', isSelected.toString());
+    });
+
+    // Update store
+    language.set(newLang);
+  };
+
+  // Initialize language
+  const initLanguage = () => {
+    const currentLang = language.get();
+    updateLanguage(currentLang);
+  };
+
+  // Add click handlers to language buttons
+  const addLanguageHandlers = () => {
+    document.querySelectorAll('.lang-button').forEach(button => {
+      button.addEventListener('click', () => {
+        const lang = (button as HTMLElement).dataset.langValue as 'en' | 'de' | 'es' | 'fr';
+        updateLanguage(lang);
+        
+        // Refresh the page to update all translations
+        window.location.reload();
+      });
+    });
+  };
+
+  // Initialize on page load
+  document.addEventListener('astro:page-load', () => {
+    initModal();
+    initTheme();
+    initLanguage();
+    addThemeHandlers();
+    addLanguageHandlers();
+  });
+  
   // Also initialize immediately in case we're not using view transitions
   initModal();
   initTheme();
+  initLanguage();
   addThemeHandlers();
+  addLanguageHandlers();
 </script>

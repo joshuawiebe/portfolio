@@ -6,9 +6,13 @@ export const translations = {
       experience: 'Experience',
       education: 'Education',
     },
-    theme: {
+    settings: {
+      theme: 'Theme',
+      language: 'Language',
+      system: 'System',
       light: 'Light',
       dark: 'Dark',
+      reset: 'Reset'
     },
     hero: {
       greeting: 'Hello! 👋',
@@ -20,6 +24,7 @@ export const translations = {
     },
     projects: {
       title: 'Projects',
+      viewProject: 'View Project'
     },
     experience: {
       title: 'Experience',
@@ -35,9 +40,13 @@ export const translations = {
       experience: 'Erfahrung',
       education: 'Ausbildung',
     },
-    theme: {
+    settings: {
+      theme: 'Design',
+      language: 'Sprache',
+      system: 'System',
       light: 'Hell',
       dark: 'Dunkel',
+      reset: 'Zurücksetzen'
     },
     hero: {
       greeting: 'Hallo! 👋',
@@ -49,6 +58,7 @@ export const translations = {
     },
     projects: {
       title: 'Projekte',
+      viewProject: 'Projekt ansehen'
     },
     experience: {
       title: 'Erfahrung',
@@ -57,4 +67,75 @@ export const translations = {
       title: 'Ausbildung',
     },
   },
-};
+  es: {
+    nav: {
+      about: 'Sobre mí',
+      projects: 'Proyectos',
+      experience: 'Experiencia',
+      education: 'Educación',
+    },
+    settings: {
+      theme: 'Tema',
+      language: 'Idioma',
+      system: 'Sistema',
+      light: 'Claro',
+      dark: 'Oscuro',
+      reset: 'Restablecer'
+    },
+    hero: {
+      greeting: '¡Hola! 👋',
+      intro: 'Soy',
+    },
+    about: {
+      title: 'Sobre mí',
+      skills: 'Habilidades',
+    },
+    projects: {
+      title: 'Proyectos',
+      viewProject: 'Ver proyecto'
+    },
+    experience: {
+      title: 'Experiencia',
+    },
+    education: {
+      title: 'Educación',
+    },
+  },
+  fr: {
+    nav: {
+      about: 'À propos',
+      projects: 'Projets',
+      experience: 'Expérience',
+      education: 'Formation',
+    },
+    settings: {
+      theme: 'Thème',
+      language: 'Langue',
+      system: 'Système',
+      light: 'Clair',
+      dark: 'Sombre',
+      reset: 'Réinitialiser'
+    },
+    hero: {
+      greeting: 'Bonjour! 👋',
+      intro: 'Je suis',
+    },
+    about: {
+      title: 'À propos',
+      skills: 'Compétences',
+    },
+    projects: {
+      title: 'Projets',
+      viewProject: 'Voir le projet'
+    },
+    experience: {
+      title: 'Expérience',
+    },
+    education: {
+      title: 'Formation',
+    },
+  },
+} as const;
+
+export type Language = keyof typeof translations;
+export type Translation = typeof translations.en;

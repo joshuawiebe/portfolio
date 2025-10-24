@@ -1,14 +1,14 @@
 ---
 import { siteConfig } from "../config";
 import { translations } from "../i18n/translations";
-import { languageStore } from "../store/theme";
+import { language } from "../store/language";
 import SettingsModal from "./SettingsModal.astro";
 
 const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
 const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
 const hasEducation = siteConfig.education && siteConfig.education.length > 0;
 
-const t = translations[languageStore.get()];
+const t = translations[language.get()];
 ---
 
 <header
@@ -23,6 +23,7 @@ const t = translations[languageStore.get()];
       <button 
         onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
         class="text-xl font-bold tracking-tight hover:text-primary transition-colors"
+        id="name-button"
       >
         {siteConfig.name}
       </button>
@@ -33,6 +34,7 @@ const t = translations[languageStore.get()];
           <a
             href="#about"
             class="nav-link"
+            data-nav-key="about"
           >
             {t.nav.about}
           </a>
@@ -43,6 +45,7 @@ const t = translations[languageStore.get()];
               <a
                 href="#projects"
                 class="nav-link"
+                data-nav-key="projects"
               >
                 {t.nav.projects}
               </a>
@@ -55,6 +58,7 @@ const t = translations[languageStore.get()];
               <a
                 href="#experience"
                 class="nav-link"
+                data-nav-key="experience"
               >
                 {t.nav.experience}
               </a>
@@ -67,6 +71,7 @@ const t = translations[languageStore.get()];
               <a
                 href="#education"
                 class="nav-link"
+                data-nav-key="education"
               >
                 {t.nav.education}
               </a>
@@ -133,6 +138,7 @@ const t = translations[languageStore.get()];
           <a
             href="#about"
             class="mobile-nav-link"
+            data-nav-key="about"
           >
             {t.nav.about}
           </a>
@@ -143,6 +149,7 @@ const t = translations[languageStore.get()];
               <a
                 href="#projects"
                 class="mobile-nav-link"
+                data-nav-key="projects"
               >
                 {t.nav.projects}
               </a>
@@ -155,6 +162,7 @@ const t = translations[languageStore.get()];
               <a
                 href="#experience"
                 class="mobile-nav-link"
+                data-nav-key="experience"
               >
                 {t.nav.experience}
               </a>
@@ -167,6 +175,7 @@ const t = translations[languageStore.get()];
               <a
                 href="#education"
                 class="mobile-nav-link"
+                data-nav-key="education"
               >
                 {t.nav.education}
               </a>
@@ -249,6 +258,24 @@ const t = translations[languageStore.get()];
     attributes: true,
     attributeFilter: ['data-theme']
   });
+
+  // Listen for language changes
+  import { language } from '../store/language';
+  import { translations } from '../i18n/translations';
+
+  function updateNavText(lang: keyof typeof translations) {
+    const t = translations[lang];
+    
+    // Update navigation text
+    document.querySelectorAll('[data-nav-key]').forEach(el => {
+      const key = el.getAttribute('data-nav-key');
+      if (key && key in t.nav) {
+        el.textContent = t.nav[key as keyof typeof t.nav];
+      }
+    });
+  }
+
+  language.subscribe(updateNavText);
 </script>
 
 <script>

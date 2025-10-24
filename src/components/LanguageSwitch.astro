@@ -1,0 +1,43 @@
+---
+import type { Language } from '../i18n/translations';
+
+const languages: Record<Language, string> = {
+  en: 'English',
+  de: 'Deutsch',
+  es: 'Español',
+  fr: 'Français',
+} as const;
+---
+
+<div class="relative">
+  <select
+    id="language-select"
+    class="bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+  >
+    {
+      Object.entries(languages).map(([code, label]) => (
+        <option value={code}>{label}</option>
+      ))
+    }
+  </select>
+</div>
+
+<script>
+  import { language } from '../store/language';
+  import type { Language } from '../i18n/translations';
+  
+  const select = document.getElementById('language-select') as HTMLSelectElement;
+  
+  // Set initial value
+  select.value = language.get();
+  
+  // Update store on change
+  select.addEventListener('change', () => {
+    language.set(select.value as Language);
+  });
+  
+  // Update select when store changes
+  language.subscribe((value) => {
+    select.value = value;
+  });
+</script>
