@@ -24,19 +24,11 @@
 /* Modern scroll reveal animation */
 .reveal-on-scroll {
   opacity: 1;
-  transform: translateY(0);
-  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, opacity;
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal-on-scroll:not(.revealed) {
   opacity: 0;
-  transform: translateY(20px);
-}
-
-/* Clean hover transitions */
-.revealed {
-  will-change: auto;
 }
 
 /* Disable animations for users who prefer reduced motion */
@@ -44,7 +36,6 @@
   .reveal-on-scroll {
     transition: none !important;
     opacity: 1 !important;
-    transform: none !important;
   }
 }
 

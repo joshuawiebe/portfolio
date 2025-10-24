@@ -43,19 +43,19 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
                     <div class="bg-gray-50/80 dark:bg-gray-800/50 rounded-xl sm:rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg shadow-blue-500/5 dark:shadow-blue-400/5 backdrop-blur-sm p-4 sm:p-5 md:p-6 hover:bg-gray-100/80 dark:hover:bg-gray-800/80 hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-blue-400/10 hover:-translate-y-1 transition-all duration-300 mb-8 last:mb-0">
                       <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
                       <div>
-                         <h3 
-                           data-edu-type="degree"
-                           data-edu-level={level}
-                           class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100"
-                         >
-                           {(t.education as any).degrees[level] || edu.degree}
-                         </h3>
-                         <p
-                           data-edu-type="school"
-                           data-edu-level={level}
-                           class="text-base sm:text-lg text-indigo-600 dark:text-indigo-400"
-                         >
-                           {(t.education as any).schools[level] || edu.school}
+                          <h3 
+                            data-edu-type="degree"
+                            data-edu-level={level}
+                            class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100"
+                          >
+                            {edu.degree}
+                          </h3>
+                          <p
+                            data-edu-type="school"
+                            data-edu-level={level}
+                            class="text-base sm:text-lg text-indigo-600 dark:text-indigo-400"
+                          >
+                            {edu.school}
                          </p>
                       </div>
                       <span 
