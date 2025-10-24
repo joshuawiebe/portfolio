@@ -16,7 +16,7 @@ const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
              <h2 
                data-i18n="projects.title"
                class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-foreground">
-               {t.projects.title}
+               {(t.projects as any).title}
              </h2>
             <div
               class="w-[75px] h-[5px] mt-2 rounded-full"
@@ -27,6 +27,7 @@ const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
           <div class="lg:col-span-8">
             <div class="space-y-8">
               {siteConfig.projects.map((project, index) => {
+                const projectKey = project.name.toLowerCase().replace(/\s+/g, '');
                 return (
                   <div class="group relative">
                     <div
@@ -70,11 +71,11 @@ const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
                           </h3>
                         </div>
 
-                        <p
-                          data-project-desc={project.name.toLowerCase().replace(/\s+/g, '')}
+                         <p
+                          data-project-desc={projectKey}
                           class={`text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed ${project.link ? "pr-12 sm:pr-14 md:pr-16" : ""}`}
                         >
-                          {project.description}
+                          {(t.projects as any).descriptions[projectKey] || project.description}
                         </p>
 
                         {project.skills && project.skills.length > 0 && (
@@ -93,17 +94,17 @@ const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
                             <GitHubStars repoUrl={project.link} />
                           </div>
                         )}
-                      </div>
-                    </Component>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
+                       </div>
+                     </div>
+                   </div>
+                 );
+               })}
+             </div>
+           </div>
+         </div>
+       </div>
+     </section>
+   )
 }
 
 <script>
