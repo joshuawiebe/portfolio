@@ -31,6 +31,50 @@ h2.reveal-on-scroll:not(.revealed) {
   transform: scale(0.95) translateY(30px);
 }
 
+/* Add slide effect for paragraphs */
+p.reveal-on-scroll {
+  transform: translateX(0);
+  transition: transform 0.7s cubic-bezier(0.17, 0.55, 0.55, 1), opacity 0.7s cubic-bezier(0.17, 0.55, 0.55, 1);
+}
+
+p.reveal-on-scroll:not(.revealed) {
+  transform: translateX(-30px);
+}
+
+/* Add fade effect for skills */
+[data-skill].reveal-on-scroll {
+  transform: scale(1);
+  transition: transform 0.5s cubic-bezier(0.17, 0.55, 0.55, 1), opacity 0.5s cubic-bezier(0.17, 0.55, 0.55, 1);
+}
+
+[data-skill].reveal-on-scroll:not(.revealed) {
+  transform: scale(0.9);
+}
+
+/* Add slide up effect for timeline items */
+.education-item.reveal-on-scroll,
+.experience-item.reveal-on-scroll {
+  transform: translateY(0);
+  transition: transform 0.8s cubic-bezier(0.17, 0.55, 0.55, 1), opacity 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+}
+
+.education-item.reveal-on-scroll:not(.revealed),
+.experience-item.reveal-on-scroll:not(.revealed) {
+  transform: translateY(40px);
+}
+
+/* Add fade effect for links and buttons */
+a.reveal-on-scroll,
+button.reveal-on-scroll {
+  transform: translateY(0);
+  transition: all 0.5s cubic-bezier(0.17, 0.55, 0.55, 1);
+}
+
+a.reveal-on-scroll:not(.revealed),
+button.reveal-on-scroll:not(.revealed) {
+  transform: translateY(10px);
+}
+
 /* Ensure sections are visible during SSR */
 @media (prefers-reduced-motion: reduce) {
   .reveal-on-scroll {

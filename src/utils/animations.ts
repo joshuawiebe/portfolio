@@ -27,11 +27,35 @@ export function initScrollAnimations() {
     section.querySelectorAll('h2').forEach((heading) => {
       heading.classList.add('reveal-on-scroll');
     });
+
+    // Add reveal classes to paragraphs
+    section.querySelectorAll('p').forEach((p, index) => {
+      p.classList.add('reveal-on-scroll');
+      (p as HTMLElement).style.transitionDelay = `${100 + index * 100}ms`;
+    });
+    
+    // Add reveal classes to skills
+    section.querySelectorAll('[data-skill]').forEach((skill, index) => {
+      skill.classList.add('reveal-on-scroll');
+      (skill as HTMLElement).style.transitionDelay = `${200 + index * 50}ms`;
+    });
     
     // Add reveal classes to cards with stagger
     section.querySelectorAll('.card').forEach((card, index) => {
       card.classList.add('reveal-on-scroll');
-      (card as HTMLElement).style.transitionDelay = `${index * 150}ms`;
+      (card as HTMLElement).style.transitionDelay = `${200 + index * 150}ms`;
+    });
+
+    // Add reveal classes to timeline items
+    section.querySelectorAll('.education-item, .experience-item').forEach((item, index) => {
+      item.classList.add('reveal-on-scroll');
+      (item as HTMLElement).style.transitionDelay = `${200 + index * 200}ms`;
+    });
+
+    // Add reveal classes to links and buttons
+    section.querySelectorAll('a, button').forEach((element, index) => {
+      element.classList.add('reveal-on-scroll');
+      (element as HTMLElement).style.transitionDelay = `${300 + index * 50}ms`;
     });
   });
 
