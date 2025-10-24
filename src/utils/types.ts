@@ -1,5 +1,3 @@
-export type Language = 'en' | 'de';
-
 export interface Section {
   id: string;
   title: string;

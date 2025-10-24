@@ -18,31 +18,55 @@ function updateTranslations(newLang: Language) {
     }
   });
 
-  // Update config content
+  // Update config title
   const titleElement = document.querySelector('[data-config-title]');
   if (titleElement) {
-    titleElement.textContent = t.content.title;
+    titleElement.textContent = t.hero.title;
   }
 
+  // Update about section
   const aboutElement = document.querySelector('[data-config-about]');
   if (aboutElement) {
-    aboutElement.textContent = t.content.aboutMe;
+    aboutElement.textContent = t.about.content;
   }
 
-  // Update project descriptions
-  document.querySelectorAll('[data-project-desc]').forEach(element => {
-    const project = element.getAttribute('data-project-desc');
-    if (!project || !t.content.projectDescriptions[project as keyof typeof t.content.projectDescriptions]) return;
-    element.textContent = t.content.projectDescriptions[project as keyof typeof t.content.projectDescriptions];
+  // Update education sections
+  document.querySelectorAll('[data-edu-type="degree"]').forEach(element => {
+    const level = element.getAttribute('data-edu-level');
+    if (!level || !t.education.degrees[level as keyof typeof t.education.degrees]) return;
+    element.textContent = t.education.degrees[level as keyof typeof t.education.degrees];
   });
 
-  // Update experience bullets
-  document.querySelectorAll('[data-exp-bullets]').forEach(element => {
-    const exp = element.getAttribute('data-exp-bullets');
-    if (!exp || !t.content.experienceBullets[exp as keyof typeof t.content.experienceBullets]) return;
+  document.querySelectorAll('[data-edu-type="school"]').forEach(element => {
+    const level = element.getAttribute('data-edu-level');
+    if (!level || !t.education.schools[level as keyof typeof t.education.schools]) return;
+    element.textContent = t.education.schools[level as keyof typeof t.education.schools];
+  });
+
+  document.querySelectorAll('[data-edu-type="date"]').forEach(element => {
+    const level = element.getAttribute('data-edu-level');
+    if (!level || !t.education.dates[level as keyof typeof t.education.dates]) return;
+    element.textContent = t.education.dates[level as keyof typeof t.education.dates];
+  });
+
+  document.querySelectorAll('[data-edu-type="achievement"]').forEach(element => {
+    const level = element.getAttribute('data-edu-level');
+    const index = element.getAttribute('data-edu-index');
+    if (!level || !index || !t.education.achievements[level as keyof typeof t.education.achievements]) return;
     
-    const bullets = t.content.experienceBullets[exp as keyof typeof t.content.experienceBullets];
-    const bulletElements = element.querySelectorAll('li span');
+    const achievements = t.education.achievements[level as keyof typeof t.education.achievements];
+    if (achievements[parseInt(index)]) {
+      element.textContent = achievements[parseInt(index)];
+    }
+  });
+
+  // Update experience sections
+  document.querySelectorAll('[data-exp-bullets]').forEach(element => {
+    const type = element.getAttribute('data-exp-bullets');
+    if (!type || !t.experience.bullets[type as keyof typeof t.experience.bullets]) return;
+    
+    const bullets = t.experience.bullets[type as keyof typeof t.experience.bullets];
+    const bulletElements = element.querySelectorAll('li span:last-child');
     bullets.forEach((bullet: string, index: number) => {
       if (bulletElements[index]) {
         bulletElements[index].textContent = bullet;
@@ -50,41 +74,15 @@ function updateTranslations(newLang: Language) {
     });
   });
 
-  // Update education achievements
-  document.querySelectorAll('[data-edu-achievements]').forEach(element => {
-    const edu = element.getAttribute('data-edu-achievements');
-    if (!edu || !t.content.educationAchievements[edu as keyof typeof t.content.educationAchievements]) return;
-    
-    const achievements = t.content.educationAchievements[edu as keyof typeof t.content.educationAchievements];
-    const achievementElements = element.querySelectorAll('li span');
-    achievements.forEach((achievement: string, index: number) => {
-      if (achievementElements[index]) {
-        achievementElements[index].textContent = achievement;
-      }
-    });
-
-    // Update education degrees, schools, and dates
-    document.querySelectorAll('[data-edu-degree]').forEach(element => {
-      const type = element.getAttribute('data-edu-degree');
-      if (!type || !t.content.educationDegrees[type as keyof typeof t.content.educationDegrees]) return;
-      element.textContent = t.content.educationDegrees[type as keyof typeof t.content.educationDegrees];
-    });
-
-    document.querySelectorAll('[data-edu-school]').forEach(element => {
-      const type = element.getAttribute('data-edu-school');
-      if (!type || !t.content.educationSchools[type as keyof typeof t.content.educationSchools]) return;
-      element.textContent = t.content.educationSchools[type as keyof typeof t.content.educationSchools];
-    });
-
-    document.querySelectorAll('[data-edu-date]').forEach(element => {
-      const type = element.getAttribute('data-edu-date');
-      if (!type || !t.content.educationDates[type as keyof typeof t.content.educationDates]) return;
-      element.textContent = t.content.educationDates[type as keyof typeof t.content.educationDates];
-    });
+  // Update project descriptions
+  document.querySelectorAll('[data-project-desc]').forEach(element => {
+    const project = element.getAttribute('data-project-desc')?.toLowerCase();
+    if (!project || !t.projects.descriptions[project as keyof typeof t.projects.descriptions]) return;
+    element.textContent = t.projects.descriptions[project as keyof typeof t.projects.descriptions];
   });
 
   // Update document title
-  document.title = `${t.hero.greeting} ${t.hero.intro} - ${t.content.title}`;
+  document.title = `${t.hero.greeting} ${t.hero.intro} - ${t.hero.title}`;
 }
 
 // Initialize translations
