@@ -21,58 +21,72 @@
   transition-duration: 1s;
 }
 
-/* Add scale effect for headings */
+/* Base reveal animation */
+.reveal-on-scroll {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+}
+
+.reveal-on-scroll:not(.revealed) {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+}
+
+/* Section headings animation */
 h2.reveal-on-scroll {
-  transform: scale(1) translateY(0);
-  transition: transform 0.8s cubic-bezier(0.17, 0.55, 0.55, 1), opacity 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+  transform-origin: left;
 }
 
 h2.reveal-on-scroll:not(.revealed) {
-  transform: scale(0.95) translateY(30px);
+  transform: translateY(30px) scale(0.95);
 }
 
-/* Add slide effect for paragraphs */
-p.reveal-on-scroll {
-  transform: translateX(0);
-  transition: transform 0.7s cubic-bezier(0.17, 0.55, 0.55, 1), opacity 0.7s cubic-bezier(0.17, 0.55, 0.55, 1);
+/* Project cards animation */
+.project-card.reveal-on-scroll {
+  transform-origin: center;
+  transition: all 1s cubic-bezier(0.17, 0.55, 0.55, 1);
 }
 
-p.reveal-on-scroll:not(.revealed) {
-  transform: translateX(-30px);
+.project-card.reveal-on-scroll:not(.revealed) {
+  transform: translateY(50px) scale(0.95);
 }
 
-/* Add fade effect for skills */
-[data-skill].reveal-on-scroll {
-  transform: scale(1);
-  transition: transform 0.5s cubic-bezier(0.17, 0.55, 0.55, 1), opacity 0.5s cubic-bezier(0.17, 0.55, 0.55, 1);
+/* Skills container animation */
+.skills-container.reveal-on-scroll {
+  transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
 }
 
-[data-skill].reveal-on-scroll:not(.revealed) {
-  transform: scale(0.9);
-}
-
-/* Add slide up effect for timeline items */
-.education-item.reveal-on-scroll,
-.experience-item.reveal-on-scroll {
-  transform: translateY(0);
-  transition: transform 0.8s cubic-bezier(0.17, 0.55, 0.55, 1), opacity 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
-}
-
-.education-item.reveal-on-scroll:not(.revealed),
-.experience-item.reveal-on-scroll:not(.revealed) {
+.skills-container.reveal-on-scroll:not(.revealed) {
   transform: translateY(40px);
 }
 
-/* Add fade effect for links and buttons */
-a.reveal-on-scroll,
-button.reveal-on-scroll {
-  transform: translateY(0);
+[data-skill] {
   transition: all 0.5s cubic-bezier(0.17, 0.55, 0.55, 1);
 }
 
-a.reveal-on-scroll:not(.revealed),
-button.reveal-on-scroll:not(.revealed) {
-  transform: translateY(10px);
+/* About section container animation */
+.about-container.reveal-on-scroll {
+  transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+}
+
+.about-container.reveal-on-scroll:not(.revealed) {
+  transform: translateY(40px) scale(0.98);
+}
+
+/* Timeline items animation */
+.timeline-item.reveal-on-scroll {
+  transform-origin: left;
+  transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+}
+
+.timeline-item.reveal-on-scroll:not(.revealed) {
+  transform: translateX(-30px);
+}
+
+/* Ensure smooth animations on hover after reveal */
+.revealed {
+  transition: all 0.3s ease-in-out;
 }
 
 /* Ensure sections are visible during SSR */
