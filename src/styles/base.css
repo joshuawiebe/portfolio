@@ -21,66 +21,22 @@
   transition-duration: 1s;
 }
 
-/* Base reveal animation */
+/* Modern scroll reveal animation */
 .reveal-on-scroll {
   opacity: 1;
   transform: translateY(0);
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
 }
 
 .reveal-on-scroll:not(.revealed) {
   opacity: 0;
-  transform: translateY(30px);
-  pointer-events: none;
-}
-
-/* Heading animations */
-h2.reveal-on-scroll {
-  transform-origin: left;
-}
-
-h2.reveal-on-scroll:not(.revealed) {
-  opacity: 0;
   transform: translateY(20px);
 }
 
-/* Card animations */
-.group.relative.reveal-on-scroll {
-  transform-origin: center;
-  transition-duration: 0.8s;
-}
-
-.group.relative.reveal-on-scroll:not(.revealed) {
-  opacity: 0;
-  transform: translateY(40px);
-}
-
-/* Skill animations */
-[data-skill].reveal-on-scroll {
-  transition-duration: 0.6s;
-}
-
-[data-skill].reveal-on-scroll:not(.revealed) {
-  opacity: 0;
-  transform: scale(0.9);
-}
-
-/* Timeline animations */
-.timeline-item.reveal-on-scroll {
-  transform-origin: left;
-  transition-duration: 0.8s;
-}
-
-.timeline-item.reveal-on-scroll:not(.revealed) {
-  opacity: 0;
-  transform: translateX(-20px);
-}
-
-/* Add smooth transitions for hover states after reveal */
+/* Clean hover transitions */
 .revealed {
-  transition: all 0.3s ease-in-out;
-  pointer-events: auto;
+  will-change: auto;
 }
 
 /* Disable animations for users who prefer reduced motion */

@@ -91,16 +91,8 @@
     height: 80px;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    background: linear-gradient(
-      45deg,
-      hsl(var(--primary)) 0%,
-      transparent 70%
-    );
-    backdrop-filter: blur(4px);
-    border: 1px solid hsl(var(--primary) / 0.5);
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.2);
-    animation: float-circle 3s ease-in-out infinite;
-    animation-delay: calc(var(--index) * 0.2s);
+    background: hsl(var(--primary) / 0.15);
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.1);
   }
 
   .hexagon:nth-child(even) .hexagon-inner {
@@ -187,7 +179,8 @@
     font-size: 0.875rem;
     font-family: 'Inter', sans-serif;
     letter-spacing: normal;
-    animation: status-blink 1s ease-in-out infinite;
+    opacity: 0.9;
+    transition: opacity 0.3s ease-in-out;
   }
 
   .progress-bar {

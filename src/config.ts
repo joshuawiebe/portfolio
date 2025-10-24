@@ -73,8 +73,8 @@ export const siteConfig = {
       ],
     },
     {
-      school: "Elementary School",
-      degree: "Primary Education",
+      school: "Grundschule Hunnebrock, Bünde",
+      degree: "Elementary School",
       dateRange: "2016 - 2020",
       achievements: [
         "Built strong foundation in core subjects",

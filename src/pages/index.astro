@@ -33,7 +33,7 @@ const lang = language.get();
   <body>
     <LoadingScreen />
     
-    <div id="page-content" class="opacity-0 transition-opacity duration-500">
+    <div id="page-content" class="opacity-0 transition-opacity duration-300">
       <Header />
       <main class="min-h-screen">
         <Hero />
@@ -67,14 +67,10 @@ const lang = language.get();
           const observer = new MutationObserver(() => {
             const loader = document.getElementById('loading-screen');
             if (loader && getComputedStyle(loader).opacity === '0') {
-              // Show the content with a fade in
-              setTimeout(() => {
-                pageContent.classList.remove('opacity-0');
-                // Initialize scroll animations after content is visible
-                setTimeout(() => {
-                  initScrollAnimations();
-                }, 500); // Wait for fade in to complete
-              }, 100); // Small delay to ensure loader is gone
+              // Show content
+              pageContent.classList.remove('opacity-0');
+              // Initialize scroll animations
+              initScrollAnimations();
               observer.disconnect();
             }
           });
