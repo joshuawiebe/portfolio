@@ -8,18 +8,19 @@ import Education from "../components/Education.astro";
 import Footer from "../components/Footer.astro";
 import LoadingScreen from "../components/LoadingScreen.astro";
 import { siteConfig } from "../config";
-import { themeStore, languageStore } from "../store/theme";
+import { languageStore } from "../store/theme";
 import "../styles/global.css";
+
 ---
 
-<html lang={languageStore.get()} data-theme={themeStore.get()}>
+<html lang={languageStore.get()}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={siteConfig.description} />
-    <meta name="theme-color" content={themeStore.get() === 'dark' ? '#020817' : '#ffffff'} />
+    <meta name="theme-color" content="#000000" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -45,13 +46,14 @@ import "../styles/global.css";
 
       // Initialize theme and language based on system preferences
       if (typeof window !== 'undefined') {
+        // Initialize theme
         const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        const systemLang = navigator.language.toLowerCase().startsWith('de') ? 'de' : 'en';
-        
-        if (!localStorage.getItem('theme')) {
-          themeStore.set(systemTheme);
-        }
+        const savedTheme = localStorage.getItem('theme');
+        const theme = savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : systemTheme;
+        document.documentElement.setAttribute('data-theme', theme);
 
+        // Initialize language
+        const systemLang = navigator.language.toLowerCase().startsWith('de') ? 'de' : 'en';
         if (!localStorage.getItem('language')) {
           languageStore.set(systemLang);
         }

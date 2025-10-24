@@ -1,20 +1,9 @@
-import type { Theme, Language } from './types';
-
-export const getSystemTheme = (): Theme => {
-  if (typeof window === 'undefined') return 'light';
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-};
+import type { Language } from './types';
 
 export const getSystemLanguage = (): Language => {
   if (typeof window === 'undefined') return 'en';
   const browserLang = navigator.language.toLowerCase();
   return browserLang.startsWith('de') ? 'de' : 'en';
-};
-
-export const setTheme = (theme: Theme) => {
-  if (typeof window === 'undefined') return;
-  document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem('theme', theme);
 };
 
 export const setLanguage = (lang: Language) => {

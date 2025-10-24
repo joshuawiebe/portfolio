@@ -1,10 +1,4 @@
-export type Theme = 'light' | 'dark';
 export type Language = 'en' | 'de';
-
-export interface ThemeState {
-  theme: Theme;
-  language: Language;
-}
 
 export interface Section {
   id: string;

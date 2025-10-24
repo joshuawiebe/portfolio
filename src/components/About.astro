@@ -7,7 +7,7 @@ import { siteConfig } from "../config";
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
       <div class="lg:col-span-4">
         <h2
-          class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900"
+          class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-foreground"
         >
           About Me
         </h2>
@@ -19,7 +19,7 @@ import { siteConfig } from "../config";
       </div>
 
       <div class="lg:col-span-8 space-y-8">
-        <p class="text-lg sm:text-xl md:text-2xl leading-relaxed text-gray-600">
+        <p class="text-lg sm:text-xl md:text-2xl leading-relaxed text-muted-foreground">
           {siteConfig.aboutMe}
         </p>
 
@@ -27,7 +27,7 @@ import { siteConfig } from "../config";
           <div class="flex flex-wrap gap-3">
             {
               siteConfig.skills.map((skill) => (
-                <span class="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-100 text-gray-800 rounded-full text-sm sm:text-base md:text-lg font-medium hover:bg-gray-200 transition-colors duration-200">
+                <span class="px-3 sm:px-4 py-1.5 sm:py-2 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-300 rounded-lg text-sm sm:text-base font-medium ring-1 ring-indigo-500/10 dark:ring-indigo-400/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors duration-200">
                   {skill}
                 </span>
               ))

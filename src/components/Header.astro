@@ -17,7 +17,7 @@ const t = translations[languageStore.get()];
 >
   <div class="absolute inset-0 bg-background/80 backdrop-blur-sm"></div>
   
-  <nav class="relative max-w-7xl mx-auto px-6 py-4">
+  <nav class="relative max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
     <div class="flex items-center justify-between">
       <!-- Logo/Name -->
       <button 
@@ -126,7 +126,7 @@ const t = translations[languageStore.get()];
     <!-- Mobile Navigation -->
     <div
       id="mobile-menu"
-      class="md:hidden fixed inset-x-0 top-[65px] p-4 bg-background/80 backdrop-blur-sm border-t border-border transform -translate-y-full transition-transform duration-300"
+      class="md:hidden fixed inset-x-0 top-[57px] sm:top-[65px] p-4 bg-background/80 backdrop-blur-sm border-t border-border transform -translate-y-full transition-transform duration-300"
     >
       <ul class="flex flex-col gap-2">
         <li>
@@ -232,15 +232,35 @@ const t = translations[languageStore.get()];
       mobileMenu?.classList.add('-translate-y-full');
     });
   });
+
+  // Update header on theme change
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.attributeName === 'data-theme') {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (window.scrollY > 100) {
+          header?.classList.add(isDark ? "bg-background/80" : "bg-background/80", "backdrop-blur-sm");
+        }
+      }
+    });
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  });
 </script>
 
 <script>
+  // Theme-aware header background
   window.addEventListener("scroll", () => {
     const header = document.getElementById("header");
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    
     if (window.scrollY > 100) {
-      header?.classList.add("bg-white/80", "backdrop-blur-sm");
+      header?.classList.add(isDark ? "bg-background/80" : "bg-background/80", "backdrop-blur-sm");
     } else {
-      header?.classList.remove("bg-white/80", "backdrop-blur-sm");
+      header?.classList.remove(isDark ? "bg-background/80" : "bg-background/80", "backdrop-blur-sm");
     }
   });
 </script>
