@@ -42,8 +42,6 @@ import "../styles/global.css";
     <Footer />
 
     <script>
-      import { initScrollAnimations, initHoverAnimations } from '../utils/animations';
-
       // Initialize theme and language based on system preferences
       if (typeof window !== 'undefined') {
         // Initialize theme
@@ -52,12 +50,21 @@ import "../styles/global.css";
         const theme = savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : systemTheme;
         document.documentElement.setAttribute('data-theme', theme);
 
-        // Initialize animations
-        window.addEventListener('load', () => {
-          initScrollAnimations();
-          initHoverAnimations();
-        });
+        // Initialize language
+        const systemLang = navigator.language.toLowerCase().startsWith('de') ? 'de' : 'en';
+        if (!localStorage.getItem('language')) {
+          languageStore.set(systemLang);
+        }
       }
+    </script>
+
+    <script>
+      import { initScrollAnimations } from '../utils/animations';
+
+      // Initialize animations when page loads
+      window.addEventListener('load', () => {
+        initScrollAnimations();
+      });
     </script>
   </body>
 </html>

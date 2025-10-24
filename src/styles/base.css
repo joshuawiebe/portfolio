@@ -2,9 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Scroll reveal animations */
-.reveal {
-  will-change: transform, opacity;
+/* Animation Styles */
+.reveal-on-scroll {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: transform 0.8s cubic-bezier(0.17, 0.55, 0.55, 1), opacity 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+}
+
+.reveal-on-scroll:not(.revealed) {
+  opacity: 0;
+  visibility: visible;
+  transform: translateY(50px);
+}
+
+/* Add stagger effect for cards */
+.card.reveal-on-scroll {
+  transition-duration: 1s;
+}
+
+/* Add scale effect for headings */
+h2.reveal-on-scroll {
+  transform: scale(1) translateY(0);
+  transition: transform 0.8s cubic-bezier(0.17, 0.55, 0.55, 1), opacity 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+}
+
+h2.reveal-on-scroll:not(.revealed) {
+  transform: scale(0.95) translateY(30px);
+}
+
+/* Ensure sections are visible during SSR */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    transition: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
 }
 
 /* Smooth scrolling */
