@@ -17,103 +17,62 @@ export function initScrollAnimations() {
     });
   }
 
-  // Add reveal classes to elements
-  const sections = document.querySelectorAll('section');
-  sections.forEach((section) => {
-    // Add reveal class to section
-    section.classList.add('reveal-on-scroll');
-    
-    // Project section animations
-    const projectsSection = section.querySelector('.projects-grid');
-    if (projectsSection) {
-      // Animate heading with content
-      const heading = section.querySelector('h2');
-      if (heading) {
-        heading.classList.add('reveal-on-scroll', 'section-heading');
-      }
+  // Wait for loader to finish before initializing animations
+  const loader = document.querySelector('.loading-screen');
+  if (loader) {
+    loader.addEventListener('animationend', () => {
+      // Add reveal classes to sections and their content
+      const sections = document.querySelectorAll('section');
+      sections.forEach((section) => {
+        const sectionContainer = section.querySelector('.section-container');
+        const heading = section.querySelector('h2');
+        
+        // Add animation classes to heading
+        if (heading) {
+          heading.classList.add('reveal-on-scroll', 'section-heading');
+        }
+        
+        // Add animation classes to container and its children
+        if (sectionContainer) {
+          sectionContainer.classList.add('reveal-on-scroll', 'content-container');
+          
+          // Add staggered animations to grid items
+          const gridItems = sectionContainer.querySelectorAll('.grid-item');
+          gridItems.forEach((item, index) => {
+            item.classList.add('reveal-on-scroll');
+            (item as HTMLElement).style.transitionDelay = `${index * 150}ms`;
+          });
 
-      // Animate project cards with stagger
-      section.querySelectorAll('.group.relative').forEach((card, index) => {
-        card.classList.add('reveal-on-scroll', 'project-card');
-        (card as HTMLElement).style.transitionDelay = `${400 + index * 200}ms`;
+          // Add animations to cards
+          const cards = sectionContainer.querySelectorAll('.card');
+          cards.forEach((card, index) => {
+            card.classList.add('reveal-on-scroll');
+            (card as HTMLElement).style.transitionDelay = `${index * 150}ms`;
+          });
+
+          // Add animations to timeline items
+          const timelineItems = sectionContainer.querySelectorAll('.timeline-item');
+          timelineItems.forEach((item, index) => {
+            item.classList.add('reveal-on-scroll');
+            (item as HTMLElement).style.transitionDelay = `${index * 150}ms`;
+          });
+        }
       });
-    }
 
-    // Skills section animations
-    const skillsSection = section.querySelector('.skills-grid');
-    if (skillsSection) {
-      // Animate heading with content
-      const heading = section.querySelector('h2');
-      if (heading) {
-        heading.classList.add('reveal-on-scroll', 'section-heading');
-      }
-
-      // Animate skills container and individual skills
-      skillsSection.classList.add('reveal-on-scroll', 'skills-container');
-      skillsSection.querySelectorAll('[data-skill]').forEach((skill, index) => {
-        (skill as HTMLElement).style.transitionDelay = `${500 + index * 100}ms`;
+      // Initial check
+      reveal();
+      
+      // Add scroll listener with throttling
+      let isThrottled = false;
+      window.addEventListener('scroll', () => {
+        if (!isThrottled) {
+          isThrottled = true;
+          requestAnimationFrame(() => {
+            reveal();
+            isThrottled = false;
+          });
+        }
       });
-    }
-
-    // About section animations
-    const aboutContent = section.querySelector('.about-content');
-    if (aboutContent) {
-      // Animate heading with content
-      const heading = section.querySelector('h2');
-      if (heading) {
-        heading.classList.add('reveal-on-scroll', 'section-heading');
-      }
-
-      aboutContent.classList.add('reveal-on-scroll', 'about-container');
-    }
-
-    // Experience section animations
-    const experienceItems = section.querySelectorAll('.experience-item');
-    if (experienceItems.length > 0) {
-      // Animate heading with content
-      const heading = section.querySelector('h2');
-      if (heading) {
-        heading.classList.add('reveal-on-scroll', 'section-heading');
-      }
-
-      experienceItems.forEach((item, index) => {
-        item.classList.add('reveal-on-scroll', 'timeline-item');
-        (item as HTMLElement).style.transitionDelay = `${400 + index * 200}ms`;
-      });
-    }
-
-    // Education section animations
-    const educationItems = section.querySelectorAll('.education-item');
-    if (educationItems.length > 0) {
-      // Animate heading with content
-      const heading = section.querySelector('h2');
-      if (heading) {
-        heading.classList.add('reveal-on-scroll', 'section-heading');
-      }
-
-      educationItems.forEach((item, index) => {
-        item.classList.add('reveal-on-scroll', 'timeline-item');
-        (item as HTMLElement).style.transitionDelay = `${400 + index * 200}ms`;
-      });
-    }
-  });
-
-  // Initial check
-  reveal();
-  
-  // Add scroll listener with throttling
-  let isThrottled = false;
-  window.addEventListener('scroll', () => {
-    if (!isThrottled) {
-      isThrottled = true;
-      requestAnimationFrame(() => {
-        reveal();
-        isThrottled = false;
-      });
-    }
-  });
-  
-  return () => {
-    window.removeEventListener('scroll', reveal);
-  };
+    });
+  }
 }

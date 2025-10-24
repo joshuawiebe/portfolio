@@ -8,12 +8,13 @@ import Education from "../components/Education.astro";
 import Footer from "../components/Footer.astro";
 import LoadingScreen from "../components/LoadingScreen.astro";
 import { siteConfig } from "../config";
-import { languageStore } from "../store/theme";
+import { language } from "../store/language";
 import "../styles/global.css";
 
+const lang = language.get();
 ---
 
-<html lang={languageStore.get()}>
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -31,39 +32,47 @@ import "../styles/global.css";
   </head>
   <body>
     <LoadingScreen />
-    <Header />
-    <main class="min-h-screen">
-      <Hero />
-      <About />
-      <Projects />
-      <Experience />
-      <Education />
-    </main>
-    <Footer />
+    <div class="page-content" style="opacity: 0">
+      <Header />
+      <main class="min-h-screen">
+        <Hero />
+        <About />
+        <Projects />
+        <Experience />
+        <Education />
+      </main>
+      <Footer />
+    </div>
 
     <script>
-      // Initialize theme and language based on system preferences
+      // Initialize theme based on system preferences
       if (typeof window !== 'undefined') {
-        // Initialize theme
         const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         const savedTheme = localStorage.getItem('theme');
         const theme = savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : systemTheme;
         document.documentElement.setAttribute('data-theme', theme);
-
-        // Initialize language
-        const systemLang = navigator.language.toLowerCase().startsWith('de') ? 'de' : 'en';
-        if (!localStorage.getItem('language')) {
-          languageStore.set(systemLang);
-        }
       }
     </script>
 
     <script>
       import { initScrollAnimations } from '../utils/animations';
 
-      // Initialize animations when page loads
-      window.addEventListener('load', () => {
-        initScrollAnimations();
+      // Wait for the DOM to be ready
+      document.addEventListener('DOMContentLoaded', () => {
+        const loader = document.querySelector('.loading-screen');
+        const content = document.querySelector('.page-content');
+
+        if (loader && content) {
+          // Wait for loader animation to complete
+          loader.addEventListener('animationend', () => {
+            // Show content
+            content.style.opacity = '1';
+            content.style.transition = 'opacity 0.5s ease';
+            
+            // Initialize scroll animations
+            initScrollAnimations();
+          });
+        }
       });
     </script>
   </body>
