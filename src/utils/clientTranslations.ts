@@ -81,8 +81,7 @@ function updateTranslations(newLang: Language) {
     element.textContent = t.projects.descriptions[project as keyof typeof t.projects.descriptions];
   });
 
-  // Update document title
-  document.title = `${t.hero.greeting} ${t.hero.intro} - ${t.hero.title}`;
+  // Do not update document title - keep it static
 }
 
 // Initialize translations

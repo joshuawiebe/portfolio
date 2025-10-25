@@ -1,19 +1,68 @@
 ---
+import { siteConfig } from "../config";
 ---
 
 <div
   id="loading-screen"
-  class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background"
+  class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background overflow-hidden"
+  style={`--accent-color: ${siteConfig.accentColor}`}
 >
-  <div class="w-full max-w-md p-8 space-y-6">
-    <div class="loading-status space-y-4">
-      <div class="status-wrapper">
-        <div id="loading-text" class="text-lg font-medium text-primary mb-2 text-center"></div>
-        <div id="loading-percentage" class="text-sm text-muted-foreground text-center">0%</div>
+  <!-- Background effects -->
+  <div class="particle-container absolute inset-0 -z-10 overflow-hidden">
+    <div class="particles"></div>
+    <div class="geometric-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+      <div class="shape shape-4"></div>
+      <div class="shape shape-5"></div>
+    </div>
+  </div>
+  
+  <!-- Light beam effect -->
+  <div class="light-beam"></div>
+
+  <!-- Main content -->
+  <div class="w-full max-w-md p-8 space-y-8">
+    <!-- Simple, elegant text animation -->
+    <div class="loading-status space-y-6">
+      <div class="text-center">
+        <div class="relative h-9 overflow-hidden">
+          <div id="loading-text" class="loading-text absolute inset-x-0 flex flex-col items-center">
+            <div class="loading-text-item py-2">Initializing</div>
+            <div class="loading-text-item py-2">Loading Components</div>
+            <div class="loading-text-item py-2">Preparing Content</div>
+            <div class="loading-text-item py-2">Almost Ready</div>
+          </div>
+        </div>
+        <div id="loading-percentage" class="text-sm text-muted-foreground/80 font-medium mt-2">0%</div>
       </div>
-      <div class="progress-bar-wrapper">
-        <div class="progress-bar h-1 bg-secondary overflow-hidden rounded-full">
-          <div id="progress-fill" class="progress-fill h-full bg-primary w-0 transition-all duration-300 ease-out"></div>
+
+      <!-- Progress bar -->
+      <div class="progress-bar-container relative">
+        <!-- Base progress bar with glass effect -->
+        <div class="progress-bar h-2 bg-secondary/20 overflow-hidden rounded-full backdrop-blur-sm">
+          <div id="progress-fill" class="progress-fill h-full bg-primary/90 w-0 transition-all duration-300 ease-out-expo"></div>
+        </div>
+        
+        <!-- Glow effects -->
+        <div class="progress-glow absolute -inset-1 filter blur-lg opacity-30">
+          <div class="h-4 rounded-full">
+            <div id="progress-glow-large" class="h-full bg-primary w-0 transition-all duration-300 ease-out-expo"></div>
+          </div>
+        </div>
+        <div class="progress-glow absolute -inset-0.5 filter blur-md opacity-40">
+          <div class="h-3 rounded-full">
+            <div id="progress-glow-medium" class="h-full bg-primary w-0 transition-all duration-300 ease-out-expo"></div>
+          </div>
+        </div>
+
+        <!-- Shimmer overlays -->
+        <div class="absolute inset-0">
+          <div class="progress-shimmer-fast h-full rounded-full"></div>
+        </div>
+        <div class="absolute inset-0">
+          <div class="progress-shimmer-slow h-full rounded-full"></div>
         </div>
       </div>
     </div>
@@ -21,81 +70,267 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const loadingStates = [
-      { message: 'Initializing', duration: 500 },
-      { message: 'Loading components', duration: 800 },
-      { message: 'Preparing content', duration: 700 },
-      { message: 'Optimizing display', duration: 500 },
-      { message: 'Almost ready', duration: 500 }
+  interface LoadingState {
+    message: string;
+    duration: number;
+  }
+
+  function initializeLoader() {
+    const startTime = Date.now();
+    const loadingStates: LoadingState[] = [
+      { message: 'Initializing', duration: 1000 },
+      { message: 'Loading Components', duration: 1500 },
+      { message: 'Preparing Content', duration: 1200 },
+      { message: 'Almost Ready', duration: 800 }
     ];
+
+    const totalDuration = loadingStates.reduce((acc, state) => acc + state.duration, 0);
+    let currentState = 0;
+    let currentProgress = 0;
 
     const loadingScreen = document.getElementById('loading-screen');
     const loadingText = document.getElementById('loading-text');
     const loadingPercentage = document.getElementById('loading-percentage');
     const progressFill = document.getElementById('progress-fill');
-
-    let currentState = 0;
-    let progress = 0;
-    const totalDuration = loadingStates.reduce((acc, state) => acc + state.duration, 0);
-    let startTime = Date.now();
+    const progressGlowLarge = document.getElementById('progress-glow-large');
+    const progressGlowMedium = document.getElementById('progress-glow-medium');
+    const shapes = document.querySelectorAll('.shape');
 
     function updateLoader() {
       const currentTime = Date.now();
       const elapsedTime = currentTime - startTime;
+      currentProgress = Math.min((elapsedTime / totalDuration) * 100, 100);
       
-      // Calculate total progress
-      progress = Math.min((elapsedTime / totalDuration) * 100, 100);
+      // Update percentage
+      if (loadingPercentage instanceof HTMLElement) {
+        loadingPercentage.textContent = `${Math.round(currentProgress)}%`;
+      }
       
-      // Update percentage and progress bar
-      loadingPercentage.textContent = `${Math.round(progress)}%`;
-      progressFill.style.width = `${progress}%`;
+      // Update progress bars
+      if (progressFill instanceof HTMLElement) {
+        progressFill.style.width = `${currentProgress}%`;
+      }
+      if (progressGlowLarge instanceof HTMLElement) {
+        progressGlowLarge.style.width = `${Math.max(0, currentProgress - 2)}%`;
+      }
+      if (progressGlowMedium instanceof HTMLElement) {
+        progressGlowMedium.style.width = `${Math.max(0, currentProgress - 1)}%`;
+      }
 
-      // Update loading state message
+      // Update loading state text with smooth transitions
       let timeSum = 0;
       for (let i = 0; i < loadingStates.length; i++) {
         timeSum += loadingStates[i].duration;
         if (elapsedTime <= timeSum) {
           if (currentState !== i) {
             currentState = i;
-            loadingText.textContent = loadingStates[i].message;
+            
+            if (loadingText instanceof HTMLElement) {
+              loadingText.style.transform = `translateY(-${i * 36}px)`;
+            }
+            
+            const textItems = document.querySelectorAll('.loading-text-item');
+            textItems.forEach((item, index) => {
+              item.classList.toggle('active', index === i);
+            });
           }
           break;
         }
       }
 
-      if (progress < 100) {
+      // Continue animation or finish
+      if (currentProgress < 100) {
         requestAnimationFrame(updateLoader);
-      } else {
+      } else if (loadingScreen instanceof HTMLElement) {
         setTimeout(() => {
           loadingScreen.style.opacity = '0';
           setTimeout(() => {
             loadingScreen.style.display = 'none';
-          }, 300);
+          }, 500);
         }, 200);
       }
     }
 
-    updateLoader();
-  });
+    // Initialize loader
+    requestAnimationFrame(updateLoader);
+
+    // Mouse interaction with shapes
+    document.addEventListener('mousemove', (e: MouseEvent) => {
+      const mouseX = e.clientX / window.innerWidth;
+      const mouseY = e.clientY / window.innerHeight;
+
+      document.documentElement.style.setProperty('--mouse-x', `${mouseX * 100}%`);
+      document.documentElement.style.setProperty('--mouse-y', `${mouseY * 100}%`);
+
+      shapes.forEach((shape, index) => {
+        if (shape instanceof HTMLElement) {
+          const rect = shape.getBoundingClientRect();
+          const shapeCenterX = rect.left + rect.width / 2;
+          const shapeCenterY = rect.top + rect.height / 2;
+          
+          const deltaX = e.clientX - shapeCenterX;
+          const deltaY = e.clientY - shapeCenterY;
+          
+          const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+          const maxDistance = Math.sqrt(window.innerWidth * window.innerWidth + window.innerHeight * window.innerHeight);
+          
+          const influence = Math.max(0, 1 - distance / maxDistance);
+          const speed = (index + 1) * 25 * influence;
+          
+          const moveX = (mouseX - 0.5) * speed;
+          const moveY = (mouseY - 0.5) * speed;
+          
+          shape.style.transform = `translate(${moveX}px, ${moveY}px) scale(${1 + influence * 0.1})`;
+          shape.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+        }
+      });
+    });
+  }
+
+  // Start loader when DOM is ready
+  document.addEventListener('DOMContentLoaded', initializeLoader);
 </script>
 
 <style>
-  #loading-screen {
-    transition: opacity 0.3s ease-out;
+  .loading-text {
+    transform: translateY(0);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .progress-bar {
-    position: relative;
-    overflow: hidden;
+  .loading-text-item {
+    height: 36px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: hsl(var(--primary));
+    opacity: 0.4;
+    transform: translateY(4px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .loading-text-item.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .shape {
+    position: absolute;
+    background: linear-gradient(135deg, 
+      hsl(var(--primary) / 0.3), 
+      hsl(var(--primary) / 0.05)
+    );
+    border: 1px solid hsl(var(--primary) / 0.1);
+    backdrop-filter: blur(8px);
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+      0 0 30px -5px hsl(var(--primary) / 0.2),
+      inset 0 0 20px hsl(var(--primary) / 0.1);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  .shape::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      hsl(var(--primary) / 0.2) 0%,
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .shape:hover::before {
+    opacity: 1;
+  }
+
+  .shape-1 {
+    width: 300px;
+    height: 300px;
+    top: -150px;
+    right: -150px;
+    animation: float1 20s ease-in-out infinite;
+  }
+
+  .shape-2 {
+    width: 200px;
+    height: 200px;
+    bottom: -100px;
+    left: -100px;
+    animation: float2 15s ease-in-out infinite;
+  }
+
+  .shape-3 {
+    width: 150px;
+    height: 150px;
+    bottom: 50%;
+    right: -75px;
+    animation: float3 18s ease-in-out infinite;
+  }
+
+  .shape-4 {
+    width: 250px;
+    height: 250px;
+    top: 30%;
+    left: -125px;
+    animation: float4 22s ease-in-out infinite;
+  }
+
+  .shape-5 {
+    width: 180px;
+    height: 180px;
+    bottom: 20%;
+    right: -90px;
+    animation: float5 25s ease-in-out infinite;
+  }
+
+  @keyframes float1 {
+    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    25% { transform: translate(-20px, 20px) rotate(90deg) scale(1.05); }
+    50% { transform: translate(-30px, 30px) rotate(180deg) scale(1); }
+    75% { transform: translate(-20px, 20px) rotate(270deg) scale(0.95); }
+    100% { transform: translate(0, 0) rotate(360deg) scale(1); }
+  }
+
+  @keyframes float2 {
+    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    25% { transform: translate(15px, -15px) rotate(-90deg) scale(0.95); }
+    50% { transform: translate(20px, -20px) rotate(-180deg) scale(1); }
+    75% { transform: translate(15px, -15px) rotate(-270deg) scale(1.05); }
+    100% { transform: translate(0, 0) rotate(-360deg) scale(1); }
+  }
+
+  @keyframes float3 {
+    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    33% { transform: translate(-15px, -15px) rotate(120deg) scale(1.1); }
+    66% { transform: translate(15px, -15px) rotate(240deg) scale(0.9); }
+    100% { transform: translate(0, 0) rotate(360deg) scale(1); }
+  }
+
+  @keyframes float4 {
+    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    33% { transform: translate(25px, 15px) rotate(-120deg) scale(0.9); }
+    66% { transform: translate(15px, 25px) rotate(-240deg) scale(1.1); }
+    100% { transform: translate(0, 0) rotate(-360deg) scale(1); }
+  }
+
+  @keyframes float5 {
+    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    25% { transform: translate(-20px, 25px) rotate(90deg) scale(1.1); }
+    50% { transform: translate(-25px, 20px) rotate(180deg) scale(1); }
+    75% { transform: translate(-15px, 15px) rotate(270deg) scale(0.9); }
+    100% { transform: translate(0, 0) rotate(360deg) scale(1); }
   }
 
   .progress-fill {
     position: relative;
+    transform-origin: left;
+    animation: progressPulse 2s ease-in-out infinite;
   }
 
-  .progress-fill::after {
-    content: '';
+  .progress-shimmer-fast,
+  .progress-shimmer-slow {
     position: absolute;
     top: 0;
     left: 0;
@@ -104,18 +339,58 @@
     background: linear-gradient(
       90deg,
       transparent,
-      hsl(var(--primary) / 0.4),
+      hsl(var(--primary) / 0.5),
       transparent
     );
-    animation: shine 1.5s infinite;
+    background-size: 200% 100%;
   }
 
-  @keyframes shine {
+  .progress-shimmer-fast {
+    animation: shimmerFast 2s linear infinite;
+    opacity: 0.7;
+  }
+
+  .progress-shimmer-slow {
+    animation: shimmerSlow 3s linear infinite;
+    opacity: 0.5;
+  }
+
+  @keyframes progressPulse {
+    0%, 100% {
+      filter: saturate(100%) brightness(100%);
+    }
+    50% {
+      filter: saturate(150%) brightness(120%);
+    }
+  }
+
+  @keyframes shimmerFast {
     0% {
-      transform: translateX(-100%);
+      background-position: -200% 0;
     }
     100% {
-      transform: translateX(100%);
+      background-position: 200% 0;
+    }
+  }
+
+  @keyframes shimmerSlow {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shape,
+    .progress-fill::after,
+    .progress-shimmer-fast,
+    .progress-shimmer-slow,
+    .loading-text,
+    .loading-text-item {
+      animation: none;
+      transition-duration: 0.1s;
     }
   }
 </style>
