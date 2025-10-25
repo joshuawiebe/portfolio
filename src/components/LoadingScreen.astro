@@ -3,36 +3,17 @@
 
 <div
   id="loading-screen"
-  class="fixed inset-0 z-50 flex items-center justify-center bg-background transition-all duration-500"
+  class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background"
 >
-  <div class="relative">
-    <div class="loader-container">
-      <div class="loader">
-        <div class="hexagon-container">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div class="hexagon" style={`--index: ${i};`}>
-              <div class="hexagon-inner"></div>
-            </div>
-          ))}
-        </div>
-        <div class="scanner"></div>
-        <div class="code-rings">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div class="ring" style={`--ring: ${i};`}>
-              <div class="ring-content"></div>
-            </div>
-          ))}
-        </div>
-        <div class="pulse-rings">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div class="pulse" style={`--pulse: ${i};`}></div>
-          ))}
-        </div>
+  <div class="w-full max-w-md p-8 space-y-6">
+    <div class="loading-status space-y-4">
+      <div class="status-wrapper">
+        <div id="loading-text" class="text-lg font-medium text-primary mb-2 text-center"></div>
+        <div id="loading-percentage" class="text-sm text-muted-foreground text-center">0%</div>
       </div>
-      <div class="loader-status">
-        <div class="status-text">Initializing interface</div>
-        <div class="progress-bar">
-          <div class="progress-fill"></div>
+      <div class="progress-bar-wrapper">
+        <div class="progress-bar h-1 bg-secondary overflow-hidden rounded-full">
+          <div id="progress-fill" class="progress-fill h-full bg-primary w-0 transition-all duration-300 ease-out"></div>
         </div>
       </div>
     </div>
@@ -41,266 +22,100 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const loadingStates = [
+      { message: 'Initializing', duration: 500 },
+      { message: 'Loading components', duration: 800 },
+      { message: 'Preparing content', duration: 700 },
+      { message: 'Optimizing display', duration: 500 },
+      { message: 'Almost ready', duration: 500 }
+    ];
+
     const loadingScreen = document.getElementById('loading-screen');
-    if (loadingScreen) {
-      // Wait for all content to load
-      window.addEventListener('load', () => {
-        loadingScreen.style.opacity = '0';
+    const loadingText = document.getElementById('loading-text');
+    const loadingPercentage = document.getElementById('loading-percentage');
+    const progressFill = document.getElementById('progress-fill');
+
+    let currentState = 0;
+    let progress = 0;
+    const totalDuration = loadingStates.reduce((acc, state) => acc + state.duration, 0);
+    let startTime = Date.now();
+
+    function updateLoader() {
+      const currentTime = Date.now();
+      const elapsedTime = currentTime - startTime;
+      
+      // Calculate total progress
+      progress = Math.min((elapsedTime / totalDuration) * 100, 100);
+      
+      // Update percentage and progress bar
+      loadingPercentage.textContent = `${Math.round(progress)}%`;
+      progressFill.style.width = `${progress}%`;
+
+      // Update loading state message
+      let timeSum = 0;
+      for (let i = 0; i < loadingStates.length; i++) {
+        timeSum += loadingStates[i].duration;
+        if (elapsedTime <= timeSum) {
+          if (currentState !== i) {
+            currentState = i;
+            loadingText.textContent = loadingStates[i].message;
+          }
+          break;
+        }
+      }
+
+      if (progress < 100) {
+        requestAnimationFrame(updateLoader);
+      } else {
         setTimeout(() => {
-          loadingScreen.style.display = 'none';
-        }, 500);
-      });
+          loadingScreen.style.opacity = '0';
+          setTimeout(() => {
+            loadingScreen.style.display = 'none';
+          }, 300);
+        }, 200);
+      }
     }
+
+    updateLoader();
   });
 </script>
 
 <style>
-  .loader-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3rem;
-  }
-
-  .loader {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    perspective: 1000px;
-  }
-
-  /* Floating circles */
-  .hexagon-container {
-    position: absolute;
-    inset: 0;
-    transform-style: preserve-3d;
-    animation: float 8s ease-in-out infinite;
-  }
-
-  .hexagon {
-    position: absolute;
-    inset: 0;
-    transform: rotateY(calc(var(--index) * 60deg)) translateZ(40px);
-  }
-
-  .hexagon-inner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 80px;
-    height: 80px;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: linear-gradient(
-      45deg,
-      hsl(var(--primary)) 0%,
-      transparent 70%
-    );
-    backdrop-filter: blur(4px);
-    border: 1px solid hsl(var(--primary) / 0.5);
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.2);
-    animation: float-circle 3s ease-in-out infinite;
-    animation-delay: calc(var(--index) * 0.2s);
-  }
-
-  .hexagon:nth-child(even) .hexagon-inner {
-    width: 60px;
-    height: 60px;
-    animation-duration: 4s;
-    animation-direction: reverse;
-  }
-
-  /* Scanner effect */
-  .scanner {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: conic-gradient(
-      from 0deg,
-      transparent 0deg,
-      hsl(var(--primary) / 0.2) 60deg,
-      transparent 120deg
-    );
-    animation: scan 3s linear infinite;
-  }
-
-  /* Code rings */
-  .code-rings {
-    position: absolute;
-    inset: 0;
-    transform-style: preserve-3d;
-  }
-
-  .ring {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    border: 1px dashed hsl(var(--primary) / 0.3);
-    border-radius: 50%;
-    transform: translate(-50%, -50%) rotateX(75deg) rotateY(calc(var(--ring) * 30deg));
-  }
-
-  .ring:nth-child(1) { width: 160px; height: 160px; }
-  .ring:nth-child(2) { width: 120px; height: 120px; }
-  .ring:nth-child(3) { width: 80px; height: 80px; }
-
-  .ring-content {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: repeating-linear-gradient(
-      90deg,
-      hsl(var(--primary) / 0.1) 0px,
-      hsl(var(--primary) / 0.1) 2px,
-      transparent 2px,
-      transparent 4px
-    );
-    animation: rotate-ring 20s linear infinite;
-    animation-delay: calc(var(--ring) * -4s);
-  }
-
-  /* Pulse rings */
-  .pulse {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: calc(100% - var(--pulse) * 20px);
-    height: calc(100% - var(--pulse) * 20px);
-    border: 1px solid hsl(var(--primary) / 0.3);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    animation: pulse-ring 3s ease-out infinite;
-    animation-delay: calc(var(--pulse) * 0.3s);
-  }
-
-  /* Status text and progress */
-  .loader-status {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-    min-width: 200px;
-  }
-
-  .status-text {
-    color: hsl(var(--primary));
-    font-size: 0.875rem;
-    font-family: 'Inter', sans-serif;
-    letter-spacing: normal;
-    animation: status-blink 1s ease-in-out infinite;
+  #loading-screen {
+    transition: opacity 0.3s ease-out;
   }
 
   .progress-bar {
-    width: 100%;
-    height: 2px;
-    background: hsl(var(--primary) / 0.2);
-    border-radius: 1px;
+    position: relative;
     overflow: hidden;
   }
 
   .progress-fill {
-    height: 100%;
-    background: hsl(var(--primary));
-    animation: progress 3s ease-in-out infinite;
+    position: relative;
   }
 
-  /* Keyframes */
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0) rotateX(20deg) rotateY(0);
-    }
-    50% {
-      transform: translateY(-10px) rotateX(25deg) rotateY(180deg);
-    }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--primary) / 0.4),
+      transparent
+    );
+    animation: shine 1.5s infinite;
   }
 
-  @keyframes float-circle {
-    0%, 100% {
-      opacity: 0.5;
-      transform: translate(-50%, -50%) scale(1) translateY(0);
-    }
-    50% {
-      opacity: 0.8;
-      transform: translate(-50%, -50%) scale(1.1) translateY(-10px);
-    }
-  }
-
-  @keyframes scan {
+  @keyframes shine {
     0% {
-      transform: rotate(0deg);
+      transform: translateX(-100%);
     }
     100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes rotate-ring {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes pulse-ring {
-    0% {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(0.8);
-    }
-    100% {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(1.2);
-    }
-  }
-
-  @keyframes status-blink {
-    0%, 100% {
-      opacity: 0.7;
-    }
-    50% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes progress {
-    0% {
-      width: 0%;
-    }
-    50%, 100% {
-      width: 100%;
+      transform: translateX(100%);
     }
   }
 </style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const loadingScreen = document.getElementById('loading-screen');
-    const statusText = document.querySelector('.status-text');
-    const messages = [
-      'Initializing interface',
-      'Loading components',
-      'Preparing content',
-      'Almost ready'
-    ];
-    let messageIndex = 0;
-
-    // Update status message every second
-    const messageInterval = setInterval(() => {
-      if (messageIndex < messages.length) {
-        statusText.textContent = messages[messageIndex];
-        messageIndex++;
-      }
-    }, 1000);
-
-    if (loadingScreen) {
-      // Extend the loading time to 4 seconds
-      window.addEventListener('load', () => {
-        setTimeout(() => {
-          clearInterval(messageInterval);
-          loadingScreen.style.opacity = '0';
-          setTimeout(() => {
-            loadingScreen.style.display = 'none';
-          }, 500);
-        }, 4000); // Show loader for 4 seconds
-      });
-    }
-  });
-</script>

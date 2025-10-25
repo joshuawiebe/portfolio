@@ -12,7 +12,7 @@ const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
     <section id="projects" class="p-8 sm:p-12 md:p-16 lg:p-24">
       <div>
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-          <div class="lg:col-span-4">
+           <div class="lg:col-span-4" data-aos="fade-right">
              <h2 
                data-i18n="projects.title"
                class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-foreground">
@@ -22,14 +22,14 @@ const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
               class="w-[75px] h-[5px] mt-2 rounded-full"
               style={`background-color: ${siteConfig.accentColor}`}
             />
-          </div>
+           </div>
 
           <div class="lg:col-span-8">
             <div class="space-y-8">
               {siteConfig.projects.map((project, index) => {
                 const projectKey = project.name.toLowerCase().replace(/\s+/g, '');
                 return (
-                  <div class="group relative">
+                   <div class="group relative" data-aos="fade-up" data-aos-delay={index * 100}>
                     <div
                       class="block relative p-4 sm:p-6 md:p-8 bg-gray-50/80 dark:bg-gray-800/50 rounded-xl sm:rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg shadow-blue-500/5 dark:shadow-blue-400/5 backdrop-blur-sm transition-all duration-300 hover:bg-gray-100/80 dark:hover:bg-gray-800/80 hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-blue-400/10 hover:-translate-y-1"
                     >

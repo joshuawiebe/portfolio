@@ -10,6 +10,7 @@ import LoadingScreen from "../components/LoadingScreen.astro";
 import { siteConfig } from "../config";
 import { languageStore } from "../store/theme";
 import "../styles/global.css";
+import "aos/dist/aos.css";
 
 ---
 
@@ -27,7 +28,7 @@ import "../styles/global.css";
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <title>{siteConfig.name} - {siteConfig.title}</title>
+    <title>Joshua Wiebe | Full Stack Developer</title>
   </head>
   <body>
     <LoadingScreen />
@@ -40,6 +41,16 @@ import "../styles/global.css";
       <Education />
     </main>
     <Footer />
+
+    <script>
+      import AOS from 'aos';
+      AOS.init({
+        duration: 800,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 50
+      });
+    </script>
 
     <script is:inline>
       // Theme and language initialization
