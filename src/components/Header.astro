@@ -22,19 +22,19 @@ const t = translations[language.get()];
       <!-- Logo/Name -->
       <button 
         onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
-        class="text-xl font-bold tracking-tight hover:text-primary transition-colors"
+        class="text-xl font-bold tracking-tight transition-colors duration-300 hover:text-[var(--accent-color)] animate-hidden"
         id="name-button"
       >
         {siteConfig.name}
       </button>
 
       <!-- Desktop Navigation -->
-      <ul class="hidden md:flex items-center justify-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+      <ul class="hidden md:flex items-center justify-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 nav-items">
         <li>
           <a
-            href="#about"
-            class="nav-link"
-            data-nav-key="about"
+              href="#about"
+              class="nav-link animate-hidden"
+              data-nav-key="about"
           >
             {t.nav.about}
           </a>
@@ -44,7 +44,7 @@ const t = translations[language.get()];
             <li>
               <a
                 href="#projects"
-                class="nav-link"
+                class="nav-link animate-hidden"
                 data-nav-key="projects"
               >
                 {t.nav.projects}
@@ -57,7 +57,7 @@ const t = translations[language.get()];
             <li>
               <a
                 href="#experience"
-                class="nav-link"
+                class="nav-link animate-hidden"
                 data-nav-key="experience"
               >
                 {t.nav.experience}
@@ -70,7 +70,7 @@ const t = translations[language.get()];
             <li>
               <a
                 href="#education"
-                class="nav-link"
+                class="nav-link animate-hidden"
                 data-nav-key="education"
               >
                 {t.nav.education}
@@ -84,7 +84,7 @@ const t = translations[language.get()];
         <!-- Settings Button -->
         <button
           id="settings-button"
-          class="p-2 hover:bg-secondary rounded-md transition-colors"
+          class="p-2 transition-colors duration-300 hover:text-[var(--accent-color)] rounded-md animate-hidden"
           aria-label="Settings"
         >
           <svg
@@ -106,7 +106,7 @@ const t = translations[language.get()];
         <!-- Mobile Menu Button -->
         <button
           id="mobile-menu-button"
-          class="md:hidden p-2 hover:bg-secondary rounded-md transition-colors"
+          class="md:hidden p-2 transition-colors duration-300 hover:text-[var(--accent-color)] rounded-md animate-hidden"
           aria-label="Toggle menu"
         >
           <svg 
@@ -191,20 +191,11 @@ const t = translations[language.get()];
 
 <style>
   .nav-link {
-    @apply relative py-1 text-muted-foreground hover:text-foreground transition-colors text-base font-medium;
-  }
-
-  .nav-link::after {
-    content: '';
-    @apply absolute left-0 right-0 bottom-0 h-0.5 bg-primary scale-x-0 transition-transform duration-300;
-  }
-
-  .nav-link:hover::after {
-    @apply scale-x-100;
+    @apply relative py-1 text-muted-foreground transition-colors duration-300 hover:text-[var(--accent-color)] text-base font-medium;
   }
 
   .mobile-nav-link {
-    @apply block w-full px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md transition-colors;
+    @apply block w-full px-4 py-2 text-muted-foreground hover:text-[var(--accent-color)] rounded-md transition-colors duration-300;
   }
 </style>
 
@@ -242,23 +233,6 @@ const t = translations[language.get()];
     });
   });
 
-  // Update header on theme change
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.attributeName === 'data-theme') {
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (window.scrollY > 100) {
-          header?.classList.add(isDark ? "bg-background/80" : "bg-background/80", "backdrop-blur-sm");
-        }
-      }
-    });
-  });
-
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['data-theme']
-  });
-
   // Listen for language changes
   import { language } from '../store/language';
   import { translations } from '../i18n/translations';
@@ -276,18 +250,16 @@ const t = translations[language.get()];
   }
 
   language.subscribe(updateNavText);
-</script>
 
-<script>
   // Theme-aware header background
   window.addEventListener("scroll", () => {
     const header = document.getElementById("header");
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     
     if (window.scrollY > 100) {
-      header?.classList.add(isDark ? "bg-background/80" : "bg-background/80", "backdrop-blur-sm");
+      header?.classList.add("bg-background/80", "backdrop-blur-sm");
     } else {
-      header?.classList.remove(isDark ? "bg-background/80" : "bg-background/80", "backdrop-blur-sm");
+      header?.classList.remove("bg-background/80", "backdrop-blur-sm");
     }
   });
 </script>

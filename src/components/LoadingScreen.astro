@@ -78,10 +78,10 @@ import { siteConfig } from "../config";
   function initializeLoader() {
     const startTime = Date.now();
     const loadingStates: LoadingState[] = [
-      { message: 'Initializing', duration: 1000 },
-      { message: 'Loading Components', duration: 1500 },
-      { message: 'Preparing Content', duration: 1200 },
-      { message: 'Almost Ready', duration: 800 }
+      { message: 'Initializing', duration: 600 },
+      { message: 'Loading Components', duration: 800 },
+      { message: 'Preparing Content', duration: 600 },
+      { message: 'Almost Ready', duration: 500 }
     ];
 
     const totalDuration = loadingStates.reduce((acc, state) => acc + state.duration, 0);
@@ -144,9 +144,105 @@ import { siteConfig } from "../config";
       } else if (loadingScreen instanceof HTMLElement) {
         setTimeout(() => {
           loadingScreen.style.opacity = '0';
-          setTimeout(() => {
-            loadingScreen.style.display = 'none';
-          }, 500);
+            setTimeout(() => {
+              loadingScreen.style.display = 'none';
+              
+              // Start animations
+              function startAnimations() {
+                // Get elements to animate
+                const navItems = document.querySelectorAll('.nav-link');
+                const heroGreeting = document.querySelector('#hero h2');
+                const heroName = document.querySelector('#hero h1');
+                const heroTitle = document.querySelector('#hero p');
+                const socialIcons = document.querySelectorAll('#hero > div:last-child > a');
+                
+                // Remove hidden state and add appropriate animations
+                setTimeout(() => {
+                  // Get all header elements
+                  const nameButton = document.getElementById('name-button');
+                  const settingsButton = document.getElementById('settings-button');
+                  const mobileMenuButton = document.getElementById('mobile-menu-button');
+                  
+                  // Animation timing configuration
+                  const baseDelay = 150;    // Initial delay
+                  const stagger = 80;       // Time between each element in a group
+                  const groupDelay = 250;   // Extra delay between groups
+                  let currentDelay = baseDelay;
+                  
+                  // Helper function for animations
+                  function animateElement(element: HTMLElement, delay: number) {
+                    setTimeout(() => {
+                      element.classList.remove('animate-hidden');
+                      element.classList.add('animate-slide-up');
+                    }, delay);
+                  }
+                  
+                  // Container-aware animation sequence
+                  function setInitialState(element: HTMLElement) {
+                    element.style.opacity = '0';
+                    element.style.transform = 'translateY(30px)';
+                  }
+
+                  // 1. Navbar section - animate from top container
+                  if (nameButton instanceof HTMLElement) {
+                    animateElement(nameButton, currentDelay);
+                  }
+                  currentDelay += groupDelay;
+
+                  // Nav items rise sequentially
+                  navItems.forEach((item, index) => {
+                    if (item instanceof HTMLElement) {
+                      setInitialState(item);
+                      animateElement(item, currentDelay + (index * stagger));
+                    }
+                  });
+                  currentDelay += (navItems.length * stagger) + groupDelay;
+
+                  // 2. Controls rise from their container
+                  if (settingsButton instanceof HTMLElement) {
+                    setInitialState(settingsButton);
+                    animateElement(settingsButton, currentDelay);
+                  }
+                  if (mobileMenuButton instanceof HTMLElement) {
+                    setInitialState(mobileMenuButton);
+                    animateElement(mobileMenuButton, currentDelay + stagger);
+                  }
+                  currentDelay += groupDelay * 1.2;
+
+                  // 3. Hero section - elements rise from their containers
+                  if (heroGreeting instanceof HTMLElement) {
+                    setInitialState(heroGreeting);
+                    animateElement(heroGreeting, currentDelay);
+                  }
+                  currentDelay += stagger * 1.5;
+
+                  if (heroName instanceof HTMLElement) {
+                    setInitialState(heroName);
+                    animateElement(heroName, currentDelay);
+                  }
+                  currentDelay += stagger * 1.5;
+
+                  if (heroTitle instanceof HTMLElement) {
+                    setInitialState(heroTitle);
+                    animateElement(heroTitle, currentDelay);
+                  }
+                  currentDelay += groupDelay;
+
+                  // 4. Social icons rise from bottom
+                  socialIcons.forEach((icon, index) => {
+                    if (icon instanceof HTMLElement) {
+                      setInitialState(icon);
+                      // Slightly faster sequence for social icons
+                      const quickStagger = stagger * 0.7;
+                      animateElement(icon, currentDelay + (index * quickStagger));
+                    }
+                  });
+                }, 100);
+              }
+              
+              // Start the animation sequence
+              startAnimations();
+            }, 500);
         }, 200);
       }
     }

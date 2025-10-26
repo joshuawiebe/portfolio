@@ -102,6 +102,129 @@ dialog:focus {
   outline: none;
 }
 
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  opacity: 0;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in-left {
+  opacity: 0;
+  animation: fadeInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Animation delays */
+.animation-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
+/* Animation Classes */
+.animate-hidden {
+  opacity: 0;
+  transform: translateY(100%);
+  pointer-events: none;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.9s cubic-bezier(0.25, 0.4, 0, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Container-specific animations */
+.nav-items .animate-hidden {
+  transform: translateY(40px);
+}
+
+#hero .animate-hidden {
+  transform: translateY(50px);
+}
+
+/* Hover interactions */
+.nav-link:hover::before,
+#name-button:hover::before,
+#settings-button:hover::before,
+#mobile-menu-button:hover::before,
+.social-link:hover::before {
+  transform: scaleX(1);
+}
+
+/* Interactive element hover effects */
+.nav-link, 
+#name-button,
+#settings-button,
+#mobile-menu-button,
+.social-link {
+  position: relative;
+  transition: all 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform, color;
+}
+
+.nav-link:hover,
+#name-button:hover,
+#settings-button:hover,
+#mobile-menu-button:hover,
+.social-link:hover {
+  color: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+.nav-link:active,
+#name-button:active,
+#settings-button:active,
+#mobile-menu-button:active,
+.social-link:active {
+  transform: translateY(0);
+  transition-duration: 0.2s;
+}
+
 /* Loading screen styles */
 #loading-screen {
   background-color: hsl(var(--background));
