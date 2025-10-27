@@ -13,12 +13,18 @@ const t = useTranslations();
   <!-- Gradient overlay -->
   <div
     class="absolute inset-0 -z-10"
-    style={`background: radial-gradient(ellipse 800px 1200px at 0% 0%, ${siteConfig.accentColor}40 0%, ${siteConfig.accentColor}30 20%, ${siteConfig.accentColor}20 40%, transparent 70%)`}
+    style={`background: radial-gradient(ellipse 800px 1200px at 0% 0%, 
+      ${siteConfig.accentColor}40 0%, 
+      ${siteConfig.accentColor}25 20%, 
+      ${siteConfig.accentColor}15 40%, 
+      var(--gradient-end-color) 70%, 
+      var(--gradient-end-strong) 90%, 
+      var(--gradient-end-solid) 100%)`}
   >
   </div>
   <svg
     aria-hidden="true"
-    class="absolute inset-0 -z-10 size-full stroke-gray-300 dark:stroke-gray-600/40 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
+    class="fixed inset-0 -z-10 size-full stroke-gray-500 dark:stroke-gray-300 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
   >
     <defs>
       <pattern
@@ -125,7 +131,7 @@ const t = useTranslations();
       fill="url(#programming-symbols)"
       width="100%"
       height="100%"
-      class="opacity-20 dark:opacity-[0.15]"></rect>
+      class="opacity-[0.35] dark:opacity-[0.4]"></rect>
     <rect
       fill="url(#0787a7c5-978c-4f66-83c7-11c213f99cb7)"
       width="100%"
@@ -249,6 +255,18 @@ const t = useTranslations();
 </div>
 
 <style>
+  :root {
+    --gradient-end-color: rgba(255, 255, 255, 0.3);
+    --gradient-end-strong: rgba(255, 255, 255, 0.8);
+    --gradient-end-solid: white;
+  }
+
+  :root[data-theme="dark"] {
+    --gradient-end-color: rgba(0, 0, 0, 0.3);
+    --gradient-end-strong: rgba(0, 0, 0, 0.8);
+    --gradient-end-solid: rgb(9, 9, 11);
+  }
+
   @keyframes fadeIn {
     from {
       opacity: 0;
